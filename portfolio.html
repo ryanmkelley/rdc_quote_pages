@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conifer Technologies - IoT Cloud Development Specialists</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: #ffffff;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            overflow-x: hidden;
+            padding-top: 2rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #f8fafc;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(16, 185, 129, 0.4);
+        }
+
+        /* Projects Section */
+        .projects-section {
+            padding: 2rem 0;
+            background: rgba(30, 41, 59, 0.3);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+            width: 100%;
+        }
+
+        .project-card {
+            background: rgba(51, 65, 85, 0.85);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(16, 185, 129, 0.15);
+            cursor: pointer;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            min-height: 600px;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(16, 185, 129, 0.15);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .project-header {
+            padding: 1.8rem;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(5, 150, 105, 0.08) 100%);
+            position: relative;
+            border-bottom: 1px solid rgba(16, 185, 129, 0.1);
+        }
+
+        .project-logo {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 120px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .project-logo:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        .lunar-logo {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: #ffffff;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .lunar-logo::after {
+            content: "LUNAR";
+            letter-spacing: 0.1em;
+        }
+
+        .boreas-logo {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            color: #ffffff;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .boreas-logo::after {
+            content: "BOREAS";
+            letter-spacing: 0.1em;
+        }
+
+        .particle-logo {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: #ffffff;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .particle-logo::after {
+            content: "PARTICLE";
+            letter-spacing: 0.05em;
+            font-size: 0.8rem;
+        }
+
+        .project-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #f8fafc;
+            line-height: 1.3;
+        }
+
+        .project-subtitle {
+            color: #10b981;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            font-size: 0.9rem;
+        }
+
+        .project-description {
+            color: #cbd5e1;
+            line-height: 1.4;
+            font-size: 0.9rem;
+        }
+
+        .project-content {
+            padding: 1.8rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .project-image-showcase {
+            margin: 1.2rem 0;
+            text-align: center;
+            min-height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-image-showcase img {
+            max-width: 90%;
+            max-height: 140px;
+            height: auto;
+            object-fit: contain;
+            border-radius: 10px;
+            background: rgba(51, 65, 85, 0.4);
+            padding: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        /* Lunar project image glow */
+        .lunar-glow img {
+            box-shadow: 
+                0 0 20px rgba(251, 191, 36, 0.3),
+                0 0 40px rgba(245, 158, 11, 0.2),
+                0 6px 20px rgba(0, 0, 0, 0.15);
+            background: radial-gradient(ellipse at center, rgba(251, 191, 36, 0.15) 0%, rgba(51, 65, 85, 0.4) 70%);
+        }
+
+        .lunar-glow img:hover {
+            transform: scale(1.05);
+            box-shadow: 
+                0 0 30px rgba(251, 191, 36, 0.5),
+                0 0 60px rgba(245, 158, 11, 0.3),
+                0 12px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Boreas project image glow */
+        .boreas-glow img {
+            box-shadow: 
+                0 0 20px rgba(6, 182, 212, 0.3),
+                0 0 40px rgba(8, 145, 178, 0.2),
+                0 6px 20px rgba(0, 0, 0, 0.15);
+            background: radial-gradient(ellipse at center, rgba(6, 182, 212, 0.15) 0%, rgba(51, 65, 85, 0.4) 70%);
+        }
+
+        .boreas-glow img:hover {
+            transform: scale(1.05);
+            box-shadow: 
+                0 0 30px rgba(6, 182, 212, 0.5),
+                0 0 60px rgba(8, 145, 178, 0.3),
+                0 12px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Particle project image glow */
+        .particle-glow img {
+            box-shadow: 
+                0 0 20px rgba(59, 130, 246, 0.3),
+                0 0 40px rgba(29, 78, 216, 0.2),
+                0 6px 20px rgba(0, 0, 0, 0.15);
+            background: radial-gradient(ellipse at center, rgba(59, 130, 246, 0.15) 0%, rgba(51, 65, 85, 0.4) 70%);
+        }
+
+        .particle-glow img:hover {
+            transform: scale(1.05);
+            box-shadow: 
+                0 0 30px rgba(59, 130, 246, 0.5),
+                0 0 60px rgba(29, 78, 216, 0.3),
+                0 12px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .project-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 0.8rem;
+            margin: 1.2rem 0;
+        }
+
+        .metric {
+            text-align: center;
+            padding: 0.9rem 0.6rem;
+            background: rgba(16, 185, 129, 0.12);
+            border-radius: 10px;
+            border: 1px solid rgba(16, 185, 129, 0.15);
+        }
+
+        .metric-number {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #10b981;
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            line-height: 1.2;
+        }
+
+        .tech-stack {
+            margin-top: 1rem;
+        }
+
+        .tech-stack h4 {
+            color: #10b981;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+
+        .tech-tag {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            padding: 0.25rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 8rem 0;
+            background: rgba(15, 23, 42, 0.8);
+            text-align: center;
+        }
+
+        .cta-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #f8fafc;
+        }
+
+        .cta-description {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            margin-bottom: 2rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .projects-grid {
+                gap: 1rem;
+            }
+            
+            .project-title {
+                font-size: 1.2rem;
+            }
+            
+            .project-image-showcase img {
+                height: 120px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .projects-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .projects-section {
+                min-height: auto;
+                padding: 1rem 0;
+            }
+            
+            .container {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section id="projects" class="projects-section scroll-reveal">
+        <div class="container">
+            <h2 class="section-title">Proven Track Record</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-header">
+                        <a href="https://www.lunaroutpost.com/" target="_blank" class="project-logo lunar-logo"></a>
+                        <h3 class="project-title">Canary Air Quality
+                        </h3>
+                        <p class="project-subtitle">Lunar Outpost Partnership</p>
+                        <p class="project-description">Ryan Kelley served as Technical Program Manager overseeing the implementation of the AWS IoT Core Cloud Infrastructure as well as the production and deployment of IoT air quality monitors for space and commercial applications.</p>
+                    </div>
+                    <div class="project-content">
+                        <div class="project-image-showcase lunar-glow">
+                            <img src="LunaroutpostProduct.png" alt="Lunar Outpost Canary Air Quality Monitor">
+                        </div>
+                        <div class="project-metrics">
+                            <div class="metric">
+                                <div class="metric-number">3,000+</div>
+                                <div class="metric-label">Deployed Devices</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-number">1,000+</div>
+                                <div class="metric-label">Units/Year</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-number">1-minute</div>
+                                <div class="metric-label">Average Sample Frequency</div>
+                            </div>
+                        </div>
+                        <p style="color: #cbd5e1; margin-bottom: 1rem;">Hazardous gas detection for space station and oil & gas industry. Monitors CH4, TVOCs, PM, Ammonia, and more with real-time cloud analytics.</p>
+                        <div class="tech-stack">
+                            <h4>Technology Stack:</h4>
+                            <div class="tech-tags">
+                                <span class="tech-tag">AWS IoT Core</span>
+                                <span class="tech-tag">Lambda</span>
+                                <span class="tech-tag">DynamoDB</span>
+                                <span class="tech-tag">Cellular IoT</span>
+                                <span class="tech-tag">Real-time Analytics</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <a href="https://www.boreasmonitoring.com/" target="_blank" class="project-logo boreas-logo"></a>
+                        <h3 class="project-title">CryoScout™ Monitoring</h3>
+                        <p class="project-subtitle">Boreas Monitoring - 2+ Year Partnership</p>
+                        <p class="project-description">Conifer Technologies partnered with Boreas Monitoring to implement a complete IoT solution for mission-critical cryogenic storage monitoring with gram-accurate liquid nitrogen measurements.</p>
+                    </div>
+                    <div class="project-content">
+                        <div class="project-image-showcase boreas-glow">
+                            <img src="BoreasProduct.png" alt="Boreas CryoScout Monitoring System">
+                        </div>
+                        <div class="project-metrics">
+                            <div class="metric">
+                                <div class="metric-number">300+</div>
+                                <div class="metric-label">Deployed Devices</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-number">1-month</div>
+                                <div class="metric-label">Battery Life</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-number">24/7</div>
+                                <div class="metric-label">Monitoring</div>
+                            </div>
+                        </div>
+                        <p style="color: #cbd5e1; margin-bottom: 1rem;">Critical liquid nitrogen monitoring for cryogenic storage. Developed by fertility lab professionals to address flaws in temperature-based monitoring.</p>
+                        <div class="tech-stack">
+                            <h4>Technology Stack:</h4>
+                            <div class="tech-tags">
+                                <span class="tech-tag">AWS</span>
+                                <span class="tech-tag">IoT Device Management</span>
+                                <span class="tech-tag">Alert Systems</span>
+                                <span class="tech-tag">Mobile Apps</span>
+                                <span class="tech-tag">Data Logging</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <a href="https://www.particle.io/" target="_blank" class="project-logo particle-logo"></a>
+                        <h3 class="project-title">Particle.io</h3>
+                        <p class="project-subtitle">IoT Implementation Partner</p>
+                        <p class="project-description">Conifer is a trusted implementation partner for Particle's global IoT platform, enabling cellular, satellite, and WiFi connectivity solutions.</p>
+                    </div>
+                    <div class="project-content">
+                        <div class="project-image-showcase particle-glow">
+                            <img src="ParticleProduct.png" alt="Particle IoT Device Platform">
+                        </div>
+                        <div class="project-metrics">
+                            <div class="metric">
+                                <div class="metric-number">8,500+</div>
+                                <div class="metric-label">Global Clients</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-number">5,000+</div>
+                                <div class="metric-label">Particle Devices</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-number">Trusted</div>
+                                <div class="metric-label">Partner</div>
+                            </div>
+                        </div>
+                        <p style="color: #cbd5e1; margin-bottom: 1rem;">Specialized in rapid deployment of IoT solutions using Particle's platform. Multiple successful client implementations across various industries.</p>
+                        <div class="tech-stack">
+                            <h4>Technology Stack:</h4>
+                            <div class="tech-tags">
+                                <span class="tech-tag">Particle Cloud</span>
+                                <span class="tech-tag">Cellular IoT</span>
+                                <span class="tech-tag">WiFi</span>
+                                <span class="tech-tag">Satellite</span>
+                                <span class="tech-tag">Device Fleet Management</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="cta" class="cta-section scroll-reveal">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title">Ready to Scale Your IoT Solution?</h2>
+                <p class="cta-description">Let's discuss how our proven AWS cloud architecture and IoT expertise can accelerate your project from prototype to production.</p>
+                <a href="mailto:hello@conifer.tech" class="cta-button">Start Your Project</a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Scroll reveal animation
+        function revealOnScroll() {
+            const reveals = document.querySelectorAll('.scroll-reveal');
+            
+            reveals.forEach(reveal => {
+                const windowHeight = window.innerHeight;
+                const revealTop = reveal.getBoundingClientRect().top;
+                const revealPoint = 150;
+                
+                if (revealTop < windowHeight - revealPoint) {
+                    reveal.classList.add('revealed');
+                }
+            });
+        }
+
+        // Event listeners
+        window.addEventListener('scroll', revealOnScroll);
+        window.addEventListener('load', revealOnScroll);
+
+        // Interactive card effects
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>
