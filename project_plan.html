@@ -3,27 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Gantt Chart - Clean Timeline</title>
+    <title>IoT Project Gantt Chart</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+            background-color: #f8f9fa;
         }
         
         .container {
-            max-width: 1600px;
+            max-width: 1400px;
             margin: 0 auto;
             background: white;
-            border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             overflow: hidden;
         }
         
         .header {
-            background: linear-gradient(135deg, #2C3E50 0%, #34495E 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             padding: 30px;
             text-align: center;
@@ -31,35 +30,14 @@
         
         .header h1 {
             margin: 0;
-            font-size: 2.2em;
-            font-weight: 300;
+            font-size: 2.5em;
+            font-weight: 600;
         }
         
-        .project-info {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-        
-        .info-item {
-            background: rgba(255,255,255,0.1);
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-        }
-        
-        .info-number {
-            font-size: 1.8em;
-            font-weight: bold;
-            display: block;
-        }
-        
-        .info-label {
-            font-size: 0.9em;
+        .header p {
+            margin: 10px 0 0 0;
+            font-size: 1.2em;
             opacity: 0.9;
-            margin-top: 5px;
         }
         
         .gantt-container {
@@ -71,493 +49,936 @@
             min-width: 1200px;
             border-collapse: collapse;
             width: 100%;
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
         }
         
-        .gantt-header {
-            background: linear-gradient(135deg, #34495E 0%, #2C3E50 100%);
-            color: white;
-        }
-        
-        .gantt-header th {
-            padding: 15px 12px;
+        .gantt-chart th {
+            background: #f1f3f4;
+            padding: 12px 8px;
             text-align: center;
             font-weight: 600;
+            border: 1px solid #e0e0e0;
             font-size: 0.9em;
-            border-right: 1px solid rgba(255,255,255,0.1);
         }
         
-        .task-header {
-            width: 400px;
-            text-align: left !important;
-            padding-left: 20px !important;
+        .gantt-chart td {
+            padding: 8px;
+            border: 1px solid #e0e0e0;
+            vertical-align: middle;
+            height: 45px;
         }
         
-        .week-header {
-            width: 80px;
-            font-size: 0.8em;
+        .task-name {
+            font-weight: 600;
+            color: #333;
+            min-width: 350px;
+            background: #fafafa;
+            text-align: left;
+            padding-left: 15px;
         }
         
-        .gantt-row {
-            border-bottom: 1px solid #ecf0f1;
-            transition: background-color 0.2s ease;
-        }
-        
-        .gantt-row:hover {
-            background-color: #f8f9fa;
-        }
-        
-        .phase-row {
-            background: linear-gradient(135deg, #FF6B6B 0%, #EE5A6F 100%);
-            color: white;
-            font-weight: bold;
-        }
-        
-        .phase-row td {
-            padding: 15px 12px;
-            border-right: 1px solid rgba(255,255,255,0.2);
+        .phase-header {
+            background: #e8f0fe !important;
+            font-weight: 700;
+            color: #1a73e8;
             font-size: 1.1em;
         }
         
-        .task-cell {
-            padding: 12px 20px;
-            font-weight: 500;
-            color: #2C3E50;
-            border-right: 1px solid #ecf0f1;
+        .task-row {
+            font-size: 0.9em;
+            color: #555;
+        }
+        
+        .milestone-row {
+            background: #fff3cd !important;
+            font-weight: 600;
+            color: #856404;
         }
         
         .week-cell {
-            padding: 8px;
+            width: 60px;
             text-align: center;
-            border-right: 1px solid #ecf0f1;
             position: relative;
-            height: 40px;
         }
         
         .task-bar {
-            height: 20px;
-            border-radius: 10px;
-            position: relative;
-            margin: 10px 4px;
-            transition: all 0.3s ease;
-        }
-        
-        .task-bar:hover {
             height: 24px;
-            margin: 8px 4px;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-        
-        .phase-0 { background: linear-gradient(135deg, #FF6B6B 0%, #EE5A6F 100%); }
-        .phase-1 { background: linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%); }
-        .phase-2 { background: linear-gradient(135deg, #45B7D1 0%, #96CEB4 100%); }
-        .phase-3 { background: linear-gradient(135deg, #F093FB 0%, #F5576C 100%); }
-        .phase-4 { background: linear-gradient(135deg, #4FACFE 0%, #00F2FE 100%); }
-        .phase-5 { background: linear-gradient(135deg, #43E97B 0%, #38F9D7 100%); }
-        .phase-6 { background: linear-gradient(135deg, #FA709A 0%, #FEE140 100%); }
-        
-        .milestone {
-            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%) !important;
-            border: 2px solid #FF8C00;
-            position: relative;
-        }
-        
-        .milestone::after {
-            content: '◆';
-            position: absolute;
-            top: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #FF8C00;
-            font-size: 16px;
-            font-weight: bold;
-        }
-        
-        .deliverable-row {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            font-style: italic;
-        }
-        
-        .deliverable-row td {
-            padding: 10px 20px;
-            font-size: 0.9em;
-            border-right: 1px solid rgba(255,255,255,0.2);
-        }
-        
-        .critical-path {
-            border: 2px solid #e74c3c;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7); }
-            70% { box-shadow: 0 0 0 8px rgba(231, 76, 60, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
-        }
-        
-        .legend {
-            margin-top: 30px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-        }
-        
-        .legend-item {
+            border-radius: 12px;
+            margin: 2px;
             display: flex;
             align-items: center;
-            padding: 12px;
-            background: #f8f9fa;
-            border-radius: 8px;
-        }
-        
-        .legend-color {
-            width: 30px;
-            height: 20px;
-            border-radius: 4px;
-            margin-right: 12px;
-        }
-        
-        .legend-text {
-            font-weight: 500;
-            color: #2C3E50;
-        }
-        
-        .progress-summary {
-            margin-top: 30px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            justify-content: center;
             color: white;
-            padding: 25px;
-            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 600;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
         
-        .progress-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 20px;
-            margin-top: 15px;
-        }
+        .phase-0 { background: linear-gradient(135deg, #ff6b6b, #ee5a52); }
+        .phase-1 { background: linear-gradient(135deg, #4ecdc4, #44a08d); }
+        .phase-2 { background: linear-gradient(135deg, #45b7d1, #96c93d); }
+        .phase-3 { background: linear-gradient(135deg, #f9ca24, #f0932b); }
+        .phase-4 { background: linear-gradient(135deg, #eb4d4b, #6c5ce7); }
+        .phase-5 { background: linear-gradient(135deg, #a55eea, #26de81); }
         
-        .progress-item {
-            background: rgba(255,255,255,0.15);
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-        }
-        
-        .progress-number {
-            font-size: 1.5em;
+        .milestone {
+            background: #dc3545;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: white;
             font-weight: bold;
-            display: block;
-        }
-        
-        .progress-label {
-            font-size: 0.9em;
-            opacity: 0.9;
-            margin-top: 5px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>IoT Safety Platform - Project Timeline</h1>
-            <div class="project-info">
-                <div class="info-item">
-                    <span class="info-number">14</span>
-                    <div class="info-label">Weeks Duration</div>
-                </div>
-                <div class="info-item">
-                    <span class="info-number">6</span>
-                    <div class="info-label">Major Phases</div>
-                </div>
-                <div class="info-item">
-                    <span class="info-number">32</span>
-                    <div class="info-label">Key Tasks</div>
-                </div>
-                <div class="info-item">
-                    <span class="info-number">7</span>
-                    <div class="info-label">Deliverables</div>
-                </div>
-            </div>
+            <h1>IoT Device Management System</h1>
+            <p>Project Timeline - 13 Week Development Plan</p>
         </div>
         
         <div class="gantt-container">
             <table class="gantt-chart">
-                <thead class="gantt-header">
+                <thead>
                     <tr>
-                        <th class="task-header">Phase / Task</th>
-                        <th class="week-header">W1</th>
-                        <th class="week-header">W2</th>
-                        <th class="week-header">W3</th>
-                        <th class="week-header">W4</th>
-                        <th class="week-header">W5</th>
-                        <th class="week-header">W6</th>
-                        <th class="week-header">W7</th>
-                        <th class="week-header">W8</th>
-                        <th class="week-header">W9</th>
-                        <th class="week-header">W10</th>
-                        <th class="week-header">W11</th>
-                        <th class="week-header">W12</th>
-                        <th class="week-header">W13</th>
-                        <th class="week-header">W14</th>
+                        <th class="task-name">Phase / Task</th>
+                        <th>Week 1</th>
+                        <th>Week 2</th>
+                        <th>Week 3</th>
+                        <th>Week 4</th>
+                        <th>Week 5</th>
+                        <th>Week 6</th>
+                        <th>Week 7</th>
+                        <th>Week 8</th>
+                        <th>Week 9</th>
+                        <th>Week 10</th>
+                        <th>Week 11</th>
+                        <th>Week 12</th>
+                        <th>Week 13</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- Phase 0: Architecture -->
-                    <tr class="gantt-row phase-row">
-                        <td>Phase 0: Architecture & Planning</td>
-                        <td><div class="task-bar phase-0"></div></td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <tr class="phase-header">
+                        <td class="task-name">Phase 0: Architecture & Planning</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
                     </tr>
-                    <tr class="gantt-row">
-                        <td class="task-cell">└ Technology stack confirmation</td>
-                        <td class="week-cell"><div class="task-bar phase-0"></div></td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <tr class="task-row">
+                        <td class="task-name">Technology stack & database decision</td>
+                        <td class="week-cell"><div class="task-bar phase-0">✓</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
                     </tr>
-                    <tr class="gantt-row">
-                        <td class="task-cell">└ System architecture design</td>
-                        <td class="week-cell"><div class="task-bar phase-0 critical-path"></div></td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <tr class="task-row">
+                        <td class="task-name">System architecture & data flow diagrams</td>
+                        <td class="week-cell"><div class="task-bar phase-0">✓</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
                     </tr>
-                    <tr class="gantt-row">
-                        <td class="task-cell">└ Database schema design</td>
-                        <td class="week-cell"><div class="task-bar phase-0"></div></td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <tr class="task-row">
+                        <td class="task-name">Database schema design</td>
+                        <td class="week-cell"><div class="task-bar phase-0">✓</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
                     </tr>
-                    <tr class="gantt-row">
-                        <td class="task-cell">└ API endpoint specifications</td>
-                        <td class="week-cell"><div class="task-bar phase-0"></div></td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <tr class="task-row">
+                        <td class="task-name">API endpoint specifications & security approach</td>
+                        <td class="week-cell"><div class="task-bar phase-0">✓</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
                     </tr>
-                    <tr class="gantt-row">
-                        <td class="task-cell">└ Device provisioning strategy</td>
-                        <td class="week-cell"><div class="task-bar phase-0"></div></td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <tr class="task-row">
+                        <td class="task-name">MQTT topic structure & device provisioning</td>
+                        <td class="week-cell"><div class="task-bar phase-0">✓</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
                     </tr>
-                    <tr class="gantt-row deliverable-row">
-                        <td>🎯 Deliverable: Complete system design & approval</td>
-                        <td class="week-cell"><div class="task-bar milestone"></div></td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <tr class="milestone-row">
+                        <td class="task-name">🎯 Architecture Approval</td>
+                        <td class="week-cell"><div class="milestone">M0</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
                     </tr>
-                    
+
                     <!-- Phase 1: Foundation -->
-                    <tr class="gantt-row phase-row">
-                        <td>Phase 1: Core Infrastructure</td>
-                        <td></td>
-                        <td><div class="task-bar phase-1"></div></td>
-                        <td><div class="task-bar phase-1"></div></td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <tr class="phase-header">
+                        <td class="task-name">Phase 1: Infrastructure Foundation</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
                     </tr>
-                    <tr class="gantt-row">
-                        <td class="task-cell">└ CDK infrastructure setup</td>
-                        <td></td>
-                        <td class="week-cell"><div class="task-bar phase-1 critical-path"></div></td>
-                        <td class="week-cell"><div class="task-bar phase-1 critical-path"></div></td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <tr class="task-row">
+                        <td class="task-name">CI/CD pipeline with GitHub Actions</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"><div class="task-bar phase-1">✓</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
                     </tr>
-                    <tr class="gantt-row">
-                        <td class="task-cell">└ IoT Core configuration</td>
-                        <td></td>
-                        <td class="week-cell"><div class="task-bar phase-1"></div></td>
-                        <td class="week-cell"><div class="task-bar phase-1"></div></td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <tr class="task-row">
+                        <td class="task-name">DynamoDB tables & data models</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"><div class="task-bar phase-1">✓</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
                     </tr>
-                    <tr class="gantt-row">
-                        <td class="task-cell">└ Lambda data processing functions</td>
-                        <td></td>
-                        <td class="week-cell"><div class="task-bar phase-1"></div></td>
-                        <td class="week-cell"><div class="task-bar phase-1"></div></td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <tr class="task-row">
+                        <td class="task-name">IoT Core configuration & thing registry</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"><div class="task-bar phase-1">✓</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
                     </tr>
-                    <tr class="gantt-row">
-                        <td class="task-cell">└ Database setup (DynamoDB + TimeStream)</td>
-                        <td></td>
-                        <td class="week-cell"><div class="task-bar phase-1"></div></td>
-                        <td class="week-cell"><div class="task-bar phase-1"></div></td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <tr class="task-row">
+                        <td class="task-name">Lambda functions framework & base handlers</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"><div class="task-bar phase-1">✓</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
                     </tr>
-                    <tr class="gantt-row">
-                        <td class="task-cell">└ Device simulator development</td>
-                        <td></td>
-                        <td class="week-cell"><div class="task-bar phase-1"></div></td>
-                        <td class="week-cell"><div class="task-bar phase-1"></div></td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <tr class="task-row">
+                        <td class="task-name">Device data simulator for testing</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"><div class="task-bar phase-1">✓</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
                     </tr>
-                    <tr class="gantt-row deliverable-row">
-                        <td>🎯 Deliverable: End-to-end data pipeline</td>
-                        <td></td><td></td>
-                        <td class="week-cell"><div class="task-bar milestone"></div></td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <tr class="milestone-row">
+                        <td class="task-name">🎯 End-to-end data path demo</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"><div class="milestone">M1</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
                     </tr>
-                    
+
                     <!-- Phase 2: User Management -->
-                    <tr class="gantt-row phase-row">
-                        <td>Phase 2: User Management & Authentication</td>
-                        <td></td><td></td><td></td>
-                        <td><div class="task-bar phase-2"></div></td>
-                        <td><div class="task-bar phase-2"></div></td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <tr class="phase-header">
+                        <td class="task-name">Phase 2: User Management & Authentication</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
                     </tr>
-                    <tr class="gantt-row">
-                        <td class="task-cell">└ Authentication system & MFA</td>
-                        <td></td><td></td><td></td>
-                        <td class="week-cell"><div class="task-bar phase-2"></div></td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <tr class="task-row">
+                        <td class="task-name">User pool configuration</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"><div class="task-bar phase-2">✓</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
                     </tr>
-                    <tr class="gantt-row">
-                        <td class="task-cell">└ Role-based access control</td>
-                        <td></td><td></td><td></td>
-                        <td class="week-cell"><div class="task-bar phase-2"></div></td>
-                        <td class="week-cell"><div class="task-bar phase-2"></div></td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <tr class="task-row">
+                        <td class="task-name">Multi-factor authentication setup</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"><div class="task-bar phase-2">✓</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
                     </tr>
-                    <tr class="gantt-row">
-                        <td class="task-cell">└ Tenant profile management</td>
-                        <td></td><td></td><td></td>
-                        <td class="week-cell"><div class="task-bar phase-2"></div></td>
-                        <td class="week-cell"><div class="task-bar phase-2"></div></td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <tr class="task-row">
+                        <td class="task-name">Tenant management & data isolation</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"><div class="task-bar phase-2">✓</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
                     </tr>
-                    <tr class="gantt-row">
-                        <td class="task-cell">└ Basic React dashboard</td>
-                        <td></td><td></td><td></td><td></td>
-                        <td class="week-cell"><div class="task-bar phase-2"></div></td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <tr class="task-row">
+                        <td class="task-name">Role-based access control (RBAC)</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"><div class="task-bar phase-2">✓</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
                     </tr>
-                    <tr class="gantt-row">
-                        <td class="task-cell">└ API Gateway configuration</td>
-                        <td></td><td></td><td></td>
-                        <td class="week-cell"><div class="task-bar phase-2"></div></td>
-                        <td class="week-cell"><div class="task-bar phase-2"></div></td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <tr class="task-row">
+                        <td class="task-name">API Gateway authentication integration</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"><div class="task-bar phase-2">✓</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
                     </tr>
-                    <tr class="gantt-row deliverable-row">
-                        <td>🎯 Deliverable: Functional dashboard with authentication</td>
-                        <td></td><td></td><td></td><td></td>
-                        <td class="week-cell"><div class="task-bar milestone"></div></td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <tr class="task-row">
+                        <td class="task-name">Basic React dashboard foundation</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"><div class="task-bar phase-2">✓</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
                     </tr>
-                    
+                    <tr class="milestone-row">
+                        <td class="task-name">🎯 Functional dashboard with login</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"><div class="milestone">M2</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                    </tr>
+
                     <!-- Phase 3: Device Management -->
-                    <tr class="gantt-row phase-row">
-                        <td>Phase 3: Device Management & Provisioning</td>
-                        <td></td><td></td><td></td><td></td><td></td>
-                        <td><div class="task-bar phase-3"></div></td>
-                        <td><div class="task-bar phase-3"></div></td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <tr class="phase-header">
+                        <td class="task-name">Phase 3: Device Management & MQTT</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
                     </tr>
-                    <tr class="gantt-row">
-                        <td class="task-cell">└ Device registration system</td>
-                        <td></td><td></td><td></td><td></td><td></td>
-                        <td class="week-cell"><div class="task-bar phase-3 critical-path"></div></td>
-                        <td class="week-cell"><div class="task-bar phase-3 critical-path"></div></td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <tr class="task-row">
+                        <td class="task-name">Device registration & certificate management</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"><div class="task-bar phase-3">✓</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
                     </tr>
-                    <tr class="gantt-row">
-                        <td class="task-cell">└ Fleet provisioning implementation</td>
-                        <td></td><td></td><td></td><td></td><td></td>
-                        <td class="week-cell"><div class="task-bar phase-3 critical-path"></div></td>
-                        <td class="week-cell"><div class="task-bar phase-3 critical-path"></div></td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <tr class="task-row">
+                        <td class="task-name">MQTT topic structure & message routing</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"><div class="task-bar phase-3">✓</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
                     </tr>
-                    <tr class="gantt-row">
-                        <td class="task-cell">└ Customer isolation & MQTT routing</td>
-                        <td></td><td></td><td></td><td></td><td></td>
-                        <td class="week-cell"><div class="task-bar phase-3"></div></td>
-                        <td class="week-cell"><div class="task-bar phase-3"></div></td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <tr class="task-row">
+                        <td class="task-name">Device lifecycle management APIs</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"><div class="task-bar phase-3">✓</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
                     </tr>
-                    <tr class="gantt-row">
-                        <td class="task-cell">└ Device configuration management</td>
-                        <td></td><td></td><td></td><td></td><td></td>
-                        <td class="week-cell"><div class="task-bar phase-3"></div></td>
-                        <td class="week-cell"><div class="task-bar phase-3"></div></td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <tr class="task-row">
+                        <td class="task-name">Device provisioning workflow</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"><div class="task-bar phase-3">✓</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
                     </tr>
-                    <tr class="gantt-row">
-                        <td class="task-cell">└ Internal management tools</td>
-                        <td></td><td></td><td></td><td></td><td></td>
-                        <td class="week-cell"><div class="task-bar phase-3"></div></td>
-                        <td class="week-cell"><div class="task-bar phase-3"></div></td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <tr class="task-row">
+                        <td class="task-name">Device metadata & configuration management</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"><div class="task-bar phase-3">✓</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
                     </tr>
-                    <tr class="gantt-row deliverable-row">
-                        <td>🎯 Deliverable: Device provisioning with customer isolation</td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td>
-                        <td class="week-cell"><div class="task-bar milestone"></div></td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <tr class="milestone-row">
+                        <td class="task-name">🎯 Device provisioning & isolation demo</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"><div class="milestone">M3</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
                     </tr>
-                    
+
                     <!-- Phase 4: Alerts & Events -->
-                    <tr class="gantt-row phase-row">
-                        <td>Phase 4: Alerts & Event Management</td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                        <td><div class="task-bar phase-4"></div></td>
-                        <td><div class="task-bar phase-4"></div></td>
-                        <td></td><td></td><td></td><td></td><td></td>
+                    <tr class="phase-header">
+                        <td class="task-name">Phase 4: Alerts & Event Management</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
                     </tr>
-                    <tr class="gantt-row">
-                        <td class="task-cell">└ Event lifecycle management</td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                        <td class="week-cell"><div class="task-bar phase-4"></div></td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td>
+                    <tr class="task-row">
+                        <td class="task-name">Event data ingestion & processing pipeline</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"><div class="task-bar phase-4">✓</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
                     </tr>
-                    <tr class="gantt-row">
-                        <td class="task-cell">└ Alert processing & escalation</td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                        <td class="week-cell"><div class="task-bar phase-4 critical-path"></div></td>
-                        <td class="week-cell"><div class="task-bar phase-4 critical-path"></div></td>
-                        <td></td><td></td><td></td><td></td><td></td>
+                    <tr class="task-row">
+                        <td class="task-name">Alert rule engine & threshold management</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"><div class="task-bar phase-4">✓</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
                     </tr>
-                    <tr class="gantt-row">
-                        <td class="task-cell">└ SNS notification integration</td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                        <td class="week-cell"><div class="task-bar phase-4"></div></td>
-                        <td class="week-cell"><div class="task-bar phase-4"></div></td>
-                        <td></td><td></td><td></td><td></td><td></td>
+                    <tr class="task-row">
+                        <td class="task-name">Event lifecycle (create, update, resolve)</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"><div class="task-bar phase-4">✓</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
                     </tr>
-                    <tr class="gantt-row">
-                        <td class="task-cell">└ Alert acknowledgment workflow</td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                        <td class="week-cell"><div class="task-bar phase-4"></div></td>
-                        <td class="week-cell"><div class="task-bar phase-4"></div></td>
-                        <td></td><td></td><td></td><td></td><td></td>
+                    <tr class="task-row">
+                        <td class="task-name">SNS notification integration & templates</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"><div class="task-bar phase-4">✓</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
                     </tr>
-                    <tr class="gantt-row">
-                        <td class="task-cell">└ Comprehensive testing</td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                        <td class="week-cell"><div class="task-bar phase-4"></div></td>
-                        <td class="week-cell"><div class="task-bar phase-4"></div></td>
-                        <td></td><td></td><td></td><td></td><td></td>
+                    <tr class="task-row">
+                        <td class="task-name">Alert escalation & acknowledgment system</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"><div class="task-bar phase-4">✓</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
                     </tr>
-                    <tr class="gantt-row deliverable-row">
-                        <td>🎯 Deliverable: Complete alert & event demonstration</td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                        <td class="week-cell"><div class="task-bar milestone"></div></td>
-                        <td></td><td></td><td></td><td></td><td></td>
+                    <tr class="milestone-row">
+                        <td class="task-name">🎯 Complete alert & event management</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"><div class="milestone">M4</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
                     </tr>
-                    
-                    <!-- Phase 5: Frontend & Integration -->
-                    <tr class="gantt-row phase-row">
-                        <td>Phase 5: Frontend Development & Integration</td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                        <td><div class="task-bar phase-5"></div></td>
-                        <td><div class="task-bar phase-5"></div></td>
-                        <td></td><td></td><td></td>
+
+                    <!-- Phase 5: Frontend -->
+                    <tr class="phase-header">
+                        <td class="task-name">Phase 5: Frontend & Integration</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
                     </tr>
-                    <tr class="gantt-row">
-                        <td class="task-cell">└ WebSocket real-time implementation</td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                        <td class="week-cell"><div class="task-bar phase-5 critical-path"></div></td>
-                        <td></td><td></td><td></td><td></td>
+                    <tr class="task-row">
+                        <td class="task-name">Home page, login, layout design</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"><div class="task-bar phase-5">✓</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
                     </tr>
-                    <tr class="gantt-row">
-                        <td class="task-cell">└ Device monitoring dashboard</td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                        <td class="week-cell"><div class="task-bar phase-<!DOCTYPE html>
+                    <tr class="task-row">
+                        <td class="task-name">Customer device management page</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"><div class="task-bar phase-5">✓</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                    </tr>
+                    <tr class="task-row">
+                        <td class="task-name">WebSocket implementation & testing</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"><div class="task-bar phase-5">✓</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                    </tr>
+                    <tr class="task-row">
+                        <td class="task-name">Device monitoring page (real time)</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"><div class="task-bar phase-5">✓</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                    </tr>
+                    <tr class="task-row">
+                        <td class="task-name">Event management page & alert integration</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"><div class="task-bar phase-5">✓</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                    </tr>
+                    <tr class="task-row">
+                        <td class="task-name">Mobile-responsive design & workflow integration</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"><div class="task-bar phase-5">✓</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                    </tr>
+                    <tr class="milestone-row">
+                        <td class="task-name">🎯 Production-ready UI</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"><div class="milestone">M5</div></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                    </tr>
+
+                    <!-- Phase 6: Testing & Delivery -->
+                    <tr class="phase-header">
+                        <td class="task-name">Phase 6: Testing & Production Deployment</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                    </tr>
+                    <tr class="task-row">
+                        <td class="task-name">Comprehensive test coverage (APIs, data pipeline, alerts)</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"><div class="task-bar phase-0">✓</div></td>
+                        <td class="week-cell"></td>
+                    </tr>
+                    <tr class="task-row">
+                        <td class="task-name">Error boundaries & code quality enforcement</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"><div class="task-bar phase-0">✓</div></td>
+                        <td class="week-cell"></td>
+                    </tr>
+                    <tr class="task-row">
+                        <td class="task-name">Documentation & deployment guides</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"><div class="task-bar phase-0">✓</div></td>
+                    </tr>
+                    <tr class="task-row">
+                        <td class="task-name">Performance optimization & monitoring setup</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"><div class="task-bar phase-0">✓</div></td>
+                    </tr>
+                    <tr class="milestone-row">
+                        <td class="task-name">🎯 Production Ready</td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"></td>
+                        <td class="week-cell"><div class="milestone">M6</div></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
