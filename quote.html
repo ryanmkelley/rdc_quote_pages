@@ -1,0 +1,2056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RDC MVP IoT Safety Monitoring Platform - Complete Proposal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8fafc;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>') repeat;
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff 0%, #e2e8f0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .subtitle {
+            font-size: 1.5rem;
+            font-weight: 300;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero .company {
+            font-size: 1.2rem;
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        .nav-bar {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: #e2e8f0;
+            text-decoration: none;
+            padding: 1rem 0;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+            font-size: 0.9rem;
+        }
+
+        .nav-link:hover {
+            color: #10b981;
+            border-bottom-color: #10b981;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section {
+            padding: 4rem 0;
+            position: relative;
+        }
+
+        .section:nth-child(even) {
+            background: white;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1e293b;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: #64748b;
+            text-align: center;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Portfolio Section */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(16, 185, 129, 0.15);
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(16, 185, 129, 0.15);
+        }
+
+        .project-header {
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(5, 150, 105, 0.08) 100%);
+            position: relative;
+        }
+
+        .project-logo {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: white;
+        }
+
+        .lunar-logo { background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); }
+        .boreas-logo { background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); }
+        .particle-logo { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); }
+
+        .project-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+
+        .project-subtitle {
+            color: #10b981;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .project-content {
+            padding: 2rem;
+        }
+
+        .project-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .metric {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(16, 185, 129, 0.08);
+            border-radius: 10px;
+        }
+
+        .metric-number {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #10b981;
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tech-tag {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* Project Details Section */
+        .project-philosophy {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem;
+            border-radius: 16px;
+            margin: 2rem 0;
+        }
+
+        .phase-grid {
+            display: grid;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .phase-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #10b981;
+        }
+
+        .phase-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+
+        .phase-timeline {
+            background: #10b981;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .deliverable {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        .deliverable strong {
+            color: #10b981;
+        }
+
+        /* Architecture Section */
+        .architecture-diagram {
+            background: linear-gradient(135deg, #FF6B6B 0%, #EE5A6F 100%);
+            border-radius: 16px;
+            padding: 2rem;
+            color: white;
+            margin: 2rem 0;
+        }
+
+        .shared-services {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .customer-resources {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .customer-resource {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 1.5rem;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .resource-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .resource-list li {
+            padding: 0.3rem 0;
+            padding-left: 1rem;
+            position: relative;
+        }
+
+        .resource-list li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Technical Details */
+        .tech-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .tech-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .tech-card h3 {
+            color: #1e293b;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .mqtt-structure {
+            background: #1e293b;
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+
+        /* Cost Analysis */
+        .cost-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .cost-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .cost-amount {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #10b981;
+            margin-bottom: 0.5rem;
+        }
+
+        .cost-label {
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        .cost-details {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        /* Timeline Section */
+        .timeline-container {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+            overflow-x: auto;
+        }
+
+        .gantt-chart {
+            width: 100%;
+            min-width: 1000px;
+            border-collapse: collapse;
+        }
+
+        .gantt-chart th {
+            background: #f1f3f4;
+            padding: 12px 8px;
+            text-align: center;
+            font-weight: 600;
+            border: 1px solid #e0e0e0;
+            font-size: 0.9rem;
+        }
+
+        .gantt-chart td {
+            padding: 8px;
+            border: 1px solid #e0e0e0;
+            vertical-align: middle;
+            height: 45px;
+        }
+
+        .task-name {
+            font-weight: 600;
+            color: #333;
+            min-width: 350px;
+            background: #fafafa;
+            text-align: left;
+            padding-left: 15px;
+        }
+
+        .phase-header {
+            background: #e8f0fe !important;
+            font-weight: 700;
+            color: #1a73e8;
+            font-size: 1.1em;
+        }
+
+        .task-row {
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        .milestone-row {
+            background: #fff3cd !important;
+            font-weight: 600;
+            color: #856404;
+        }
+
+        .week-cell {
+            width: 60px;
+            text-align: center;
+            position: relative;
+        }
+
+        .task-bar {
+            height: 24px;
+            border-radius: 12px;
+            margin: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.75em;
+            font-weight: 600;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .phase-0 { background: linear-gradient(135deg, #ff6b6b, #ee5a52); }
+        .phase-1 { background: linear-gradient(135deg, #4ecdc4, #44a08d); }
+        .phase-2 { background: linear-gradient(135deg, #45b7d1, #96c93d); }
+        .phase-3 { background: linear-gradient(135deg, #f9ca24, #f0932b); }
+        .phase-4 { background: linear-gradient(135deg, #eb4d4b, #6c5ce7); }
+        .phase-5 { background: linear-gradient(135deg, #a55eea, #26de81); }
+
+        .milestone {
+            background: #dc3545;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8px;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Risk Assessment */
+        .risk-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .risk-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #ef4444;
+        }
+
+        .risk-title {
+            color: #dc2626;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .mitigation {
+            background: rgba(16, 185, 129, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        .mitigation strong {
+            color: #10b981;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+            margin-top: 2rem;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(16, 185, 129, 0.4);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .nav-container {
+                gap: 1rem;
+            }
+
+            .nav-link {
+                font-size: 0.8rem;
+                padding: 0.75rem 0;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>RDC MVP IoT Platform</h1>
+            <div class="subtitle">Safety Monitoring Next GenerationSystem</div>
+            <div class="company">Proposed by Conifer Technologies LLC</div>
+        </div>
+    </section>
+
+    <!-- Navigation -->
+    <nav class="nav-bar">
+        <div class="nav-container">
+            <a href="#project-overview" class="nav-link">Project Overview</a>
+            <a href="#timeline" class="nav-link">Timeline</a>
+            <a href="#cost-analysis" class="nav-link">Cost Analysis</a>
+            <a href="#risk-assessment" class="nav-link">Risk Assessment</a>
+            <a href="#architecture" class="nav-link">Architecture</a>
+            <a href="#technical-details" class="nav-link">Technical Details</a>
+            <a href="#portfolio" class="nav-link">Portfolio</a>
+        </div>
+    </nav>
+
+
+    <!-- Project Overview -->
+    <section id="project-overview" class="section">
+        <div class="container">
+            <h2 class="section-title">Project Overview</h2>
+            <p class="section-subtitle">A comprehensive IoT safety monitoring platform built with AWS IoT Core architecture</p>
+            
+            <div class="project-philosophy">
+                <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">Project Philosophy</h3>
+                <p>This project will be approached with an agile methodology emphasizing real demonstrable value rolled out in discrete steps. Practically this means that the project will have a two week sprint cycle with the deadline of each sprint being a demonstration of a core aspect of the project. The demonstration for the final sprint will be a walkthrough of the entire product demonstration.</p>
+            </div>
+
+            <div class="phase-grid">
+                <div class="phase-card">
+                    <div class="phase-timeline">Phase 0: Weeks 1-2</div>
+                    <h3 class="phase-title">Architecture & Planning</h3>
+                    <ul style="margin-left: 1rem; color: #64748b;">
+                        <li>Technology stack confirmation (database decision, etc.)</li>
+                        <li>UI/UX Wireframe with Figma</li>
+                        <li>Define performance and scalability considerations for each tenant</li>
+                        <li>System architecture and data flow diagrams</li>
+                        <li>Finalize database schema design</li>
+                        <li>Define API endpoint specifications</li>
+                        <li>Document Security approach (authentication, authorization, data encryption)</li>
+                        <li>Define authentication provider (NextAuth, AWS Cognito, Oauth, etc.)</li>
+                        <li>Define MQTT topic structure and message formats</li>
+                        <li>Define and document device provisioning methodology</li>
+                        <li>Deployment strategy and CI/CD pipeline design</li>
+                        <li>Repo, AWS root account, billing, and access control setup</li>
+                    </ul>
+                    <div class="deliverable">
+                        <strong>Deliverable:</strong> Client approval required before proceeding to Phase 1
+                    </div>
+                </div>
+
+                <div class="phase-card">
+                    <div class="phase-timeline">Phase 1: Weeks 3-4</div>
+                    <h3 class="phase-title">Infrastructure Foundation</h3>
+                    <ul style="margin-left: 1rem; color: #64748b;">
+                        <li>CDK infrastructure setup & deployment automation (CI/CD)</li>
+                        <li>IoT Core device data ingest configuration with message routing rules</li>
+                        <li>Lambda functions for data processing & validation</li>
+                        <li>DynamoDB and TimeStream database setup</li>
+                        <li>Basic device simulator for 1 device type (dosimeter)</li>
+                    </ul>
+                    <div class="deliverable">
+                        <strong>Deliverable:</strong> Demonstrate end-to-end data path from device to database
+                    </div>
+                </div>
+
+                <div class="phase-card">
+                    <div class="phase-timeline">Phase 2: Weeks 5-6</div>
+                    <h3 class="phase-title">User Management</h3>
+                    <ul style="margin-left: 1rem; color: #64748b;">
+                        <li>User authentication</li>
+                        <li>With MFA capability</li>
+                        <li>Tenant (Customer Organization) profile and management</li>
+                        <li>User session management system</li>
+                        <li>User role-based access (3 permission levels)</li>
+                        <li>Basic React dashboard to demonstrate device data</li>
+                        <li>API Gateway configuration with REST endpoints for the dashboard</li>
+                    </ul>
+                    <div class="deliverable">
+                        <strong>Deliverable:</strong> Demonstrate a functional dashboard showing devices and real-time data with functioning login and user management
+                    </div>
+                </div>
+
+                <div class="phase-card">
+                    <div class="phase-timeline">Phase 3: Weeks 7-9</div>
+                    <h3 class="phase-title">Device Management</h3>
+                    <ul style="margin-left: 1rem; color: #64748b;">
+                        <li>Device registration, provisioning, & claim management</li>
+                        <li>Customer isolation</li>
+                        <li>MQTT topic finalization, routing, and testing</li>
+                        <li>Device deployment</li>
+                        <li>With loadout management (use case)</li>
+                        <li>Device management</li>
+                        <li>Create a single screen device provisioning and management tool for the RDC internal operations team to manage inventory, device assignment, and provisioning</li>
+                    </ul>
+                    <div class="deliverable">
+                        <strong>Deliverable:</strong> Demonstrate device provisioning, customer data isolation, and device management
+                    </div>
+                </div>
+
+                <div class="phase-card">
+                    <div class="phase-timeline">Phase 4: Weeks 10-11</div>
+                    <h3 class="phase-title">Alerts and Event Management</h3>
+                    <ul style="margin-left: 1rem; color: #64748b;">
+                        <li>Event lifecycle management (latency requirements, persistence, storage)</li>
+                        <li>Alert management</li>
+                        <li>User assignment</li>
+                        <li>Threshold configuration</li>
+                        <li>Alert deescalation</li>
+                        <li>Alert history & auditing</li>
+                        <li>SNS integration for email & SMS notifications</li>
+                        <li>100% test coverage for alerting code</li>
+                    </ul>
+                    <div class="deliverable">
+                        <strong>Deliverable:</strong> Demonstrate a complete alert event and event management
+                    </div>
+                </div>
+
+                <div class="phase-card">
+                    <div class="phase-timeline">Phase 5: Weeks 12-13</div>
+                    <h3 class="phase-title">Frontend & Integration</h3>
+                    <ul style="margin-left: 1rem; color: #64748b;">
+                        <li>Home page, login, layout</li>
+                        <li>Customer device management page</li>
+                        <li>Websocket implementation & Testing</li>
+                        <li>Requires device mode change to enable web socket communication</li>
+                        <li>Device monitoring page (real time)</li>
+                        <li>Event management page</li>
+                        <li>Event completion and documentation</li>
+                        <li>Ensure Mobile-responsive design</li>
+                        <li>Complete front end workflow integration</li>
+                        <li>First time user sign up</li>
+                        <li>Integrate alert management</li>
+                        <li>Password reset</li>
+                    </ul>
+                    <div class="deliverable">
+                        <strong>Deliverable:</strong> Demonstrate a production-ready user interface
+                    </div>
+                </div>
+
+                <div class="phase-card">
+                    <div class="phase-timeline">Phase 6: Weeks 14-16</div>
+                    <h3 class="phase-title">Testing, System Performance, & Delivery</h3>
+                    <ul style="margin-left: 1rem; color: #64748b;">
+                        <li>Define high risk/volatility areas of the code and ensure clear boundaries. At a minimum automate test coverage for:</li>
+                        <li style="margin-left: 1rem;">All access points (APIs)</li>
+                        <li style="margin-left: 1rem;">Data pipeline</li>
+                        <li style="margin-left: 1rem;">Alerts</li>
+                        <li style="margin-left: 1rem;">MQTT service</li>
+                        <li style="margin-left: 1rem;">Authentication</li>
+                        <li>Enforce strict error boundaries on all code</li>
+                        <li>Ensure no prop drilling, shared responsibility, or other opaque error boundaries</li>
+                        <li>Generate comprehensive documentation (README, API docs, architecture)</li>
+                        <li>Performance optimization and monitoring setup</li>
+                        <li>Demo preparation and deployment guides</li>
+                        <li>Document test coverage and boundaries</li>
+                        <li>Incorporate automated testing into CI/CD deployment process</li>
+                    </ul>
+                    <div class="deliverable">
+                        <strong>Deliverable:</strong> Complete system ready for production deployment
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Timeline Section -->
+    <section id="timeline" class="section">
+        <div class="container">
+            <h2 class="section-title">Project Timeline</h2>
+            <p class="section-subtitle">16-week development plan with clear milestones and deliverables</p>
+            
+            <div class="timeline-container">
+                <table class="gantt-chart">
+                    <thead>
+                        <tr>
+                            <th class="task-name">Phase / Task</th>
+                            <th>Week 1</th>
+                            <th>Week 2</th>
+                            <th>Week 3</th>
+                            <th>Week 4</th>
+                            <th>Week 5</th>
+                            <th>Week 6</th>
+                            <th>Week 7</th>
+                            <th>Week 8</th>
+                            <th>Week 9</th>
+                            <th>Week 10</th>
+                            <th>Week 11</th>
+                            <th>Week 12</th>
+                            <th>Week 13</th>
+                            <th>Week 14</th>
+                            <th>Week 15</th>
+                            <th>Week 16</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Phase 0: Architecture -->
+                        <tr class="phase-header">
+                            <td class="task-name">Phase 0: Architecture & Planning (Weeks 1-2)</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+                        <tr class="task-row">
+                            <td class="task-name">Technology stack confirmation & database decision</td>
+                            <td class="week-cell"><div class="task-bar phase-0">✓</div></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+                        <tr class="task-row">
+                            <td class="task-name">UI/UX Wireframe with Figma</td>
+                            <td class="week-cell"><div class="task-bar phase-0">✓</div></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+                        <tr class="task-row">
+                            <td class="task-name">System architecture & data flow diagrams</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"><div class="task-bar phase-0">✓</div></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+                        <tr class="task-row">
+                            <td class="task-name">Database schema & API specifications</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"><div class="task-bar phase-0">✓</div></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+                        <tr class="task-row">
+                            <td class="task-name">Security approach & authentication provider</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"><div class="task-bar phase-0">✓</div></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+                        <tr class="milestone-row">
+                            <td class="task-name">🎯 Client Architecture Approval Required</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"><div class="milestone">M0</div></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+
+                        <!-- Phase 1: Foundation -->
+                        <tr class="phase-header">
+                            <td class="task-name">Phase 1: Infrastructure Foundation (Weeks 3-4)</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+                        <tr class="task-row">
+                            <td class="task-name">CDK infrastructure setup & deployment automation</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"><div class="task-bar phase-1">✓</div></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+                        <tr class="task-row">
+                            <td class="task-name">IoT Core data ingest with message routing</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"><div class="task-bar phase-1">✓</div></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+                        <tr class="task-row">
+                            <td class="task-name">Lambda functions & database setup</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"><div class="task-bar phase-1">✓</div></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+                        <tr class="task-row">
+                            <td class="task-name">Basic device simulator (dosimeter)</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"><div class="task-bar phase-1">✓</div></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+                        <tr class="milestone-row">
+                            <td class="task-name">🎯 Demonstrate end-to-end data path from device to database</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"><div class="milestone">M1</div></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+
+                        <!-- Phase 2: User Management -->
+                        <tr class="phase-header">
+                            <td class="task-name">Phase 2: User Management (Weeks 5-6)</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+                        <tr class="task-row">
+                            <td class="task-name">User authentication with MFA capability</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"><div class="task-bar phase-2">✓</div></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+                        <tr class="task-row">
+                            <td class="task-name">Tenant management & role-based access</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"><div class="task-bar phase-2">✓</div></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+                        <tr class="task-row">
+                            <td class="task-name">Basic React dashboard & API Gateway</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"><div class="task-bar phase-2">✓</div></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+                        <tr class="milestone-row">
+                            <td class="task-name">🎯 Functional dashboard with login & user management</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"><div class="milestone">M2</div></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+
+                        <!-- Phase 3: Device Management -->
+                        <tr class="phase-header">
+                            <td class="task-name">Phase 3: Device Management (Weeks 7-9)</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+                        <tr class="task-row">
+                            <td class="task-name">Device registration & provisioning</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"><div class="task-bar phase-3">✓</div></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+                        <tr class="task-row">
+                            <td class="task-name">Customer isolation & MQTT finalization</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"><div class="task-bar phase-3">✓</div></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+                        <tr class="task-row">
+                            <td class="task-name">Device management & provisioning tool</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"><div class="task-bar phase-3">✓</div></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+                        <tr class="milestone-row">
+                            <td class="task-name">🎯 Device provisioning, customer isolation & management</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"><div class="milestone">M3</div></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+
+                        <!-- Phase 4: Alerts & Events -->
+                        <tr class="phase-header">
+                            <td class="task-name">Phase 4: Alerts & Event Management (Weeks 10-11)</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+                        <tr class="task-row">
+                            <td class="task-name">Event lifecycle & alert management</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"><div class="task-bar phase-4">✓</div></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+                        <tr class="task-row">
+                            <td class="task-name">SNS integration & 100% alert test coverage</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"><div class="task-bar phase-4">✓</div></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+                        <tr class="milestone-row">
+                            <td class="task-name">🎯 Complete alert & event management</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"><div class="milestone">M4</div></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+
+                        <!-- Phase 5: Frontend -->
+                        <tr class="phase-header">
+                            <td class="task-name">Phase 5: Frontend & Integration (Weeks 12-13)</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+                        <tr class="task-row">
+                            <td class="task-name">Complete UI design & WebSocket implementation</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"><div class="task-bar phase-5">✓</div></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+                        <tr class="task-row">
+                            <td class="task-name">Real-time monitoring & event management pages</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"><div class="task-bar phase-5">✓</div></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+                        <tr class="task-row">
+                            <td class="task-name">Mobile-responsive design & workflow integration</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"><div class="task-bar phase-5">✓</div></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+                        <tr class="milestone-row">
+                            <td class="task-name">🎯 Production-ready user interface</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"><div class="milestone">M5</div></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+
+                        <!-- Phase 6: Testing & Delivery -->
+                        <tr class="phase-header">
+                            <td class="task-name">Phase 6: Testing, Performance & Delivery (Weeks 14-16)</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+                        <tr class="task-row">
+                            <td class="task-name">Comprehensive test coverage & error boundaries</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"><div class="task-bar phase-0">✓</div></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+                        <tr class="task-row">
+                            <td class="task-name">Documentation & performance optimization</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"><div class="task-bar phase-0">✓</div></td>
+                            <td class="week-cell"></td>
+                        </tr>
+                        <tr class="task-row">
+                            <td class="task-name">CI/CD integration & deployment guides</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"><div class="task-bar phase-0">✓</div></td>
+                        </tr>
+                        <tr class="milestone-row">
+                            <td class="task-name">🎯 Production Ready System</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"><div class="milestone">M6</div></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cost Analysis -->
+    <section id="cost-analysis" class="section">
+        <div class="container">
+            <h2 class="section-title">Cost Analysis</h2>
+            <p class="section-subtitle">Expected Development and Operational Costs</p>
+            
+            <div class="cost-breakdown">
+                <div class="cost-card">
+                    <div class="cost-amount">$93,150</div>
+                    <div class="cost-label">Total Development Cost</div>
+                    <div class="cost-details">
+                        <div>Estimated ~$23,000/month</div>
+                        <div>16-week timeline</div>
+                    </div>
+                </div>
+
+                <div class="cost-card">
+                    <div class="cost-amount">$4,500</div>
+                    <div class="cost-label">Estimated Ongoing Maintenance</div>
+                    <div class="cost-details">
+                        <div>Suggested 20 hours/month budget</div>
+                        <div>Retainer + additional hours as needed</div>
+                    </div>
+                </div>
+
+                <div class="cost-card">
+                    <div class="cost-amount">$20-400</div>
+                    <div class="cost-label">Estimated Monthly AWS Costs</div>
+                    <div class="cost-details">
+                        <div>For <100 devices</div>
+                        <div>Scales with usage</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="section">
+        <div class="container">
+            <h2 class="section-title">Proven Track Record</h2>
+            <p class="section-subtitle">Conifer Technologies has successfully delivered IoT solutions for leading companies across multiple industries</p>
+            
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-logo lunar-logo">LUNAR</div>
+                        <h3 class="project-title">Canary Air Quality</h3>
+                        <p class="project-subtitle">Lunar Outpost Partnership</p>
+                        <p>Ryan Kelley served as Technical Program Manager overseeing the implementation of the AWS IoT Core Cloud Infrastructure as well as the production and deployment of IoT air quality monitors for space and commercial applications.</p>
+                    </div>
+                    <div class="project-content">
+                        <div class="project-metrics">
+                            <div class="metric">
+                                <div class="metric-number">3,000+</div>
+                                <div class="metric-label">Deployed Devices</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-number">1,000+</div>
+                                <div class="metric-label">Units/Year</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-number">1-minute</div>
+                                <div class="metric-label">Sample Frequency</div>
+                            </div>
+                        </div>
+                        <p style="color: #64748b; margin-bottom: 1rem;">Hazardous gas detection for space station and oil & gas industry. Monitors CH4, TVOCs, PM, Ammonia, and more with real-time cloud analytics.</p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">AWS IoT Core</span>
+                            <span class="tech-tag">Lambda</span>
+                            <span class="tech-tag">DynamoDB</span>
+                            <span class="tech-tag">Cellular IoT</span>
+                            <span class="tech-tag">Real-time Analytics</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-logo boreas-logo">BOREAS</div>
+                        <h3 class="project-title">CryoScout™ Monitoring</h3>
+                        <p class="project-subtitle">Boreas Monitoring - 2+ Year Partnership</p>
+                        <p>Conifer Technologies partnered with Boreas Monitoring to implement a complete IoT solution for mission-critical cryogenic storage monitoring with gram-accurate liquid nitrogen measurements.</p>
+                    </div>
+                    <div class="project-content">
+                        <div class="project-metrics">
+                            <div class="metric">
+                                <div class="metric-number">300+</div>
+                                <div class="metric-label">Deployed Devices</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-number">1-month</div>
+                                <div class="metric-label">Battery Life</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-number">24/7</div>
+                                <div class="metric-label">Monitoring</div>
+                            </div>
+                        </div>
+                        <p style="color: #64748b; margin-bottom: 1rem;">Critical liquid nitrogen monitoring for cryogenic storage. Developed by fertility lab professionals to address flaws in temperature-based monitoring.</p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">AWS</span>
+                            <span class="tech-tag">IoT Device Management</span>
+                            <span class="tech-tag">Alert Systems</span>
+                            <span class="tech-tag">Mobile Apps</span>
+                            <span class="tech-tag">Data Logging</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-logo particle-logo">VitalFlo</div>
+                        <h3 class="project-title">VitalFlo Health</h3>
+                        <p class="project-subtitle">VP of Engineering and Product</p>
+                        <p>Ryan Kelley served as VP of Engineering and Product at VitalFlo Health, leading the development of a mobile application, web dashboard, and backend services for a remote patient monitoring IoT platform.</p>
+                    </div>
+                    <div class="project-content">
+                        <div class="project-metrics">
+                            <div class="metric">
+                                <div class="metric-number">500+</div>
+                                <div class="metric-label">Deployed Devices</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-number">5,000+</div>
+                                <div class="metric-label">Users</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-number">Acquired</div>
+                                <div class="metric-label">2025</div>
+                            </div>
+                        </div>
+                        <p style="color: #64748b; margin-bottom: 1rem;">Critical real time patient monitoring for patients with Asthma, COPD, and other chronic conditions. VitalFlo enabled real time alerts from a number of connected medical devices, air quality monitors, and EHR systems.</p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">Particle Cloud</span>
+                            <span class="tech-tag">Cellular IoT</span>
+                            <span class="tech-tag">WiFi</span>
+                            <span class="tech-tag">Satellite</span>
+                            <span class="tech-tag">Device Fleet Management</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section id="architecture" class="section">
+        <div class="container">
+            <h2 class="section-title">Secure Architecture</h2>
+            <p class="section-subtitle">Silo Pattern Architecture with Shared Control Plane for optimal isolation and cost efficiency</p>
+            
+            <div class="architecture-diagram">
+                <h3 style="font-size: 1.4rem; margin-bottom: 1.5rem;">AWS Multi-Tenancy Implementation</h3>
+                
+                <div class="shared-services">
+                    <h4 style="font-size: 1.2rem; margin-bottom: 1rem;">🌐 Shared Platform Services (Deploy Once)</h4>
+                    <ul class="resource-list">
+                        <li>IoT Core Provisioning Template</li>
+                        <li>Route 53 DNS Zone</li>
+                        <li>ACM SSL Certificate</li>
+                        <li>S3 Firmware Bucket</li>
+                        <li>Config Templates</li>
+                        <li>CloudWatch Logs</li>
+                        <li>Parameter Store</li>
+                        <li>IAM Roles</li>
+                    </ul>
+                </div>
+
+                <div class="customer-resources">
+                    <div class="customer-resource">
+                        <h4 style="margin-bottom: 1rem;">🏥 Hospital St. Mary's</h4>
+                        <ul class="resource-list">
+                            <li>API Gateway</li>
+                            <li>WebSocket API</li>
+                            <li>Lambda Functions</li>
+                            <li>DynamoDB Tables</li>
+                            <li>TimeStream DB</li>
+                            <li>VPC Network</li>
+                            <li>SQS/SNS</li>
+                            <li>S3 Data Bucket</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="customer-resource">
+                        <h4 style="margin-bottom: 1rem;">🏭 Chemical Plant</h4>
+                        <ul class="resource-list">
+                            <li>API Gateway</li>
+                            <li>WebSocket API</li>
+                            <li>Lambda Functions</li>
+                            <li>DynamoDB Tables</li>
+                            <li>TimeStream DB</li>
+                            <li>VPC Network</li>
+                            <li>SQS/SNS</li>
+                            <li>S3 Data Bucket</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="customer-resource">
+                        <h4 style="margin-bottom: 1rem;">🏢 General Hospital</h4>
+                        <ul class="resource-list">
+                            <li>API Gateway</li>
+                            <li>WebSocket API</li>
+                            <li>Lambda Functions</li>
+                            <li>DynamoDB Tables</li>
+                            <li>TimeStream DB</li>
+                            <li>VPC Network</li>
+                            <li>SQS/SNS</li>
+                            <li>S3 Data Bucket</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Security Architecture Diagram -->
+            <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: white; border-radius: 16px; padding: 2rem; margin: 2rem 0;">
+                <h3 style="font-size: 1.4rem; margin-bottom: 1.5rem; text-align: center;">🔒 Security Architecture & Data Flow</h3>
+                
+                <!-- Top Row: Internet Source -->
+                <div style="display: flex; justify-content: center; margin-bottom: 2rem;">
+                    <div style="text-align: center; padding: 1.5rem; background: rgba(239, 68, 68, 0.2); border-radius: 12px; border: 2px solid #ef4444; min-width: 200px;">
+                        <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🌐</div>
+                        <div style="font-weight: 600; font-size: 1.1rem;">Internet</div>
+                        <div style="font-size: 0.8rem; opacity: 0.8;">Untrusted Network</div>
+                    </div>
+                </div>
+                
+                <!-- Split Arrows -->
+                <div style="display: flex; justify-content: center; margin-bottom: 1rem;">
+                    <div style="display: flex; align-items: center; gap: 3rem;">
+                        <div style="transform: rotate(-30deg); font-size: 1.5rem;">↙</div>
+                        <div style="transform: rotate(30deg); font-size: 1.5rem;">↘</div>
+                    </div>
+                </div>
+                
+                <!-- Two Entry Points -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-bottom: 2rem;">
+                    <!-- IoT Core Path -->
+                    <div style="text-align: center; padding: 1rem; background: rgba(16, 185, 129, 0.2); border-radius: 12px; border: 2px solid #10b981;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📡</div>
+                        <div style="font-weight: 600;">AWS IoT Core</div>
+                        <div style="font-size: 0.8rem; opacity: 0.8; margin-bottom: 0.3rem;">Device Path</div>
+                        <div style="font-size: 0.8rem; opacity: 0.8;">Device Authentication</div>
+                        <div style="font-size: 0.8rem; opacity: 0.8;">TLS/SSL Encryption</div>
+                    </div>
+                    
+                    <!-- API Gateway Path -->
+                    <div style="text-align: center; padding: 1rem; background: rgba(168, 85, 247, 0.2); border-radius: 12px; border: 2px solid #a855f7;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🚪</div>
+                        <div style="font-weight: 600;">API Gateway</div>
+                        <div style="font-size: 0.8rem; opacity: 0.8; margin-bottom: 0.3rem;">Web Dashboard Path</div>
+                        <div style="font-size: 0.8rem; opacity: 0.8;">User Authentication</div>
+                        <div style="font-size: 0.8rem; opacity: 0.8;">Rate Limiting</div>
+                        <div style="font-size: 0.8rem; opacity: 0.8;">WAF Protection</div>
+                    </div>
+                </div>
+                
+                <!-- Converge Arrows -->
+                <div style="display: flex; justify-content: center; margin-bottom: 1rem;">
+                    <div style="display: flex; align-items: center; gap: 3rem;">
+                        <div style="transform: rotate(30deg); font-size: 1.5rem;">↘</div>
+                        <div style="transform: rotate(-30deg); font-size: 1.5rem;">↙</div>
+                    </div>
+                </div>
+                
+                <!-- VPC Boundary -->
+                <div style="display: flex; justify-content: center;">
+                    <div style="text-align: center; padding: 1.5rem; background: rgba(59, 130, 246, 0.2); border-radius: 12px; border: 2px solid #3b82f6; min-width: 250px;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🛡️</div>
+                        <div style="font-weight: 600; font-size: 1.1rem;">VPC Boundary</div>
+                        <div style="font-size: 0.8rem; opacity: 0.8;">Private Network</div>
+                        <div style="font-size: 0.8rem; opacity: 0.8;">Security Groups</div>
+                    </div>
+                </div>
+                
+                <!-- Processing Layers -->
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; margin: 2rem 0;">
+                    <!-- Application Layer -->
+                    <div style="text-align: center; padding: 1.5rem; background: rgba(251, 191, 36, 0.2); border-radius: 12px; border: 2px solid #fbbf24;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚙️</div>
+                        <div style="font-weight: 600;">Lambda Functions</div>
+                        <div style="font-size: 0.8rem; opacity: 0.8;">IAM Roles</div>
+                        <div style="font-size: 0.8rem; opacity: 0.8;">Least Privilege</div>
+                        <div style="font-size: 0.8rem; opacity: 0.8;">Customer Isolation</div>
+                    </div>
+                    
+                    <!-- Database Layer -->
+                    <div style="text-align: center; padding: 1.5rem; background: rgba(34, 197, 94, 0.2); border-radius: 12px; border: 2px solid #22c55e;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🗄️</div>
+                        <div style="font-weight: 600;">Database Layer</div>
+                        <div style="font-size: 0.8rem; opacity: 0.8;">Encryption at Rest</div>
+                        <div style="font-size: 0.8rem; opacity: 0.8;">Tenant Isolation</div>
+                        <div style="font-size: 0.8rem; opacity: 0.8;">Access Controls</div>
+                    </div>
+                </div>
+                
+                <div style="background: rgba(255, 255, 255, 0.1); padding: 1.5rem; border-radius: 12px; margin-top: 2rem;">
+                    <h4 style="font-size: 1.1rem; margin-bottom: 1rem; color: #10b981;">🔐 Security Layers:</h4>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; font-size: 0.9rem;">
+                        <div>
+                            <strong>Device Level:</strong>
+                            <ul style="margin: 0.5rem 0 0 1rem; opacity: 0.9;">
+                                <li>X.509 Certificate Authentication</li>
+                                <li>TLS 1.2+ Encryption</li>
+                                <li>Device-specific IAM policies</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <strong>Application Level:</strong>
+                            <ul style="margin: 0.5rem 0 0 1rem; opacity: 0.9;">
+                                <li>Multi-factor Authentication</li>
+                                <li>Role-based Access Control</li>
+                                <li>API Rate Limiting</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <strong>Network Level:</strong>
+                            <ul style="margin: 0.5rem 0 0 1rem; opacity: 0.9;">
+                                <li>VPC Isolation</li>
+                                <li>Security Groups</li>
+                                <li>WAF Protection</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <strong>Data Level:</strong>
+                            <ul style="margin: 0.5rem 0 0 1rem; opacity: 0.9;">
+                                <li>Encryption at Rest & Transit</li>
+                                <li>Customer Data Isolation</li>
+                                <li>Audit Logging</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Database Choice Section -->
+            <div style="background: white; border-radius: 12px; padding: 2rem; margin-top: 2rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                <h3 style="color: #1e293b; margin-bottom: 1rem;">Database Architecture: DynamoDB + TimeStream</h3>
+                <p style="color: #64748b; margin-bottom: 1rem;"><strong>Strategic Choice Justification:</strong></p>
+                <ul style="color: #64748b; margin-left: 1rem;">
+                    <li>Native JSON handling eliminates data transformation overhead</li>
+                    <li>TimeStream purpose-built for IoT time-series data with automatic scaling</li>
+                    <li>Serverless scaling matches global project architecture patterns</li>
+                    <li>Better performance for IoT workloads than relational databases</li>
+                    <li>Built-in encryption and customer isolation capabilities</li>
+                    <li>Cost-effective scaling from prototype to production</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Details -->
+    <section id="technical-details" class="section">
+        <div class="container">
+            <h2 class="section-title">Technical Implementation</h2>
+            <p class="section-subtitle">Detailed MQTT structure, API design, and database architecture</p>
+            
+            <div class="tech-details">
+                <div class="tech-card">
+                    <h3>MQTT Topic Structure</h3>
+                    <div class="mqtt-structure">
+{customer-id}/
+├── radiation-badge/
+│   ├── {device-id}/
+│   │   ├── telemetry
+│   │   ├── alerts
+│   │   ├── heartbeat
+│   │   └── commands
+│   └── gas-detector/
+└── events/
+    ├── {event-id}/
+    │   ├── participants
+    │   ├── telemetry
+    │   └── status
+                    </div>
+                </div>
+
+                <div class="tech-card">
+                    <h3>Database Architecture</h3>
+                    <h4 style="color: #10b981; margin-bottom: 0.5rem;">DynamoDB Tables (Per Customer)</h4>
+                    <ul style="font-size: 0.9rem; color: #64748b; margin-bottom: 1rem;">
+                        <li>devices-{customer-id}</li>
+                        <li>users-{customer-id}</li>
+                        <li>events-{customer-id}</li>
+                        <li>alerts-{customer-id}</li>
+                        <li>configurations-{customer-id}</li>
+                        <li>sessions-{customer-id}</li>
+                    </ul>
+                    <h4 style="color: #10b981; margin-bottom: 0.5rem;">TimeStream Database</h4>
+                    <ul style="font-size: 0.9rem; color: #64748b;">
+                        <li>sensor-data-{customer-id}</li>
+                    </ul>
+                </div>
+
+                <div class="tech-card">
+                    <h3>API Endpoints</h3>
+                    <div style="font-family: 'Courier New', monospace; font-size: 0.8rem; color: #64748b;">
+                        <div style="margin-bottom: 0.5rem;"><strong>Device Management:</strong></div>
+                        <div>GET /api/devices</div>
+                        <div>GET /api/devices/{id}</div>
+                        <div>PUT /api/devices/{id}/config</div>
+                        <div style="margin: 1rem 0 0.5rem;"><strong>User Management:</strong></div>
+                        <div>POST /api/auth/login</div>
+                        <div>GET /api/users</div>
+                        <div>POST /api/users</div>
+                        <div style="margin: 1rem 0 0.5rem;"><strong>Monitoring & Data:</strong></div>
+                        <div>GET /api/devices/{device_id}/data</div>
+                        <div>GET /api/user/devices</div>
+                        <div style="margin: 1rem 0 0.5rem;"><strong>Alerts & Events:</strong></div>
+                        <div>GET /api/alerts</div>
+                        <div>POST /api/events</div>
+                        <div>POST /api/events/{id}/complete</div>
+                    </div>
+                </div>
+
+                <div class="tech-card">
+                    <h3>Data Flow Process</h3>
+                    <ol style="color: #64748b; font-size: 0.9rem;">
+                        <li><strong>Device Connects:</strong> IoT Core Shared Endpoint</li>
+                        <li><strong>Topic Routing:</strong> customer-id/* topics</li>
+                        <li><strong>Process Data:</strong> Customer Lambda</li>
+                        <li><strong>Store & Alert:</strong> Customer Database</li>
+                        <li><strong>Real-time UI:</strong> Customer WebSocket</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Risk Assessment -->
+    <section id="risk-assessment" class="section">
+        <div class="container">
+            <h2 class="section-title">Risk Assessment & Mitigation</h2>
+            <p class="section-subtitle">Identified risks and our strategies to address them proactively</p>
+            
+            <div class="risk-grid">
+                <div class="risk-card">
+                    <h3 class="risk-title">Technical Risks</h3>
+                    <h4 style="color: #1e293b; margin-bottom: 0.5rem;">Real-time Performance Requirements</h4>
+                    <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 0.5rem;">1-second latency requirement for live monitoring</p>
+                    <div class="mitigation">
+                        <strong>Mitigation:</strong> Optimize Lambda functions, use provisioned concurrency for critical paths
+                    </div>
+                    
+                    <h4 style="color: #1e293b; margin: 1rem 0 0.5rem;">WebSocket Connection Reliability</h4>
+                    <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 0.5rem;">Device interaction for real-time mode</p>
+                    <div class="mitigation">
+                        <strong>Mitigation:</strong> Implement connection retry logic, graceful degradation
+                    </div>
+                </div>
+
+                <div class="risk-card">
+                    <h3 class="risk-title">Timeline Risks</h3>
+                    <h4 style="color: #1e293b; margin-bottom: 0.5rem;">Hardware Team Integration</h4>
+                    <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 0.5rem;">Coordination with device development</p>
+                    <div class="mitigation">
+                        <strong>Mitigation:</strong> Weekly checkins, demo after every sprint
+                    </div>
+                    
+                    <h4 style="color: #1e293b; margin: 1rem 0 0.5rem;">Design Scope Creep</h4>
+                    <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 0.5rem;">UI complexity expansion</p>
+                    <div class="mitigation">
+                        <strong>Mitigation:</strong> Push UI completion and revision to the end of the project
+                    </div>
+                </div>
+
+                <div class="risk-card">
+                    <h3 class="risk-title">Integration Risks</h3>
+                    <h4 style="color: #1e293b; margin-bottom: 0.5rem;">Device Simulator Realism</h4>
+                    <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 0.5rem;">Accurate testing environment</p>
+                    <div class="mitigation">
+                        <strong>Mitigation:</strong> Research actual sensor patterns, include realistic variability
+                    </div>
+                    
+                    <h4 style="color: #1e293b; margin: 1rem 0 0.5rem;">Customer Onboarding Process</h4>
+                    <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 0.5rem;">Deployment automation requirements</p>
+                    <div class="mitigation">
+                        <strong>Mitigation:</strong> Define onboarding workflow early in Phase 0
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Ready to Start Your IoT Platform?</h2>
+            <p style="font-size: 1.2rem; opacity: 0.9; margin-bottom: 2rem;">Let's discuss how our proven AWS cloud architecture and IoT expertise can accelerate your project from prototype to production.</p>
+            <a href="mailto:ryan@conifertechnologies.com" class="cta-button">Start Your Project</a>
+        </div>
+    </section>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add scroll effect for nav links
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('.section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
