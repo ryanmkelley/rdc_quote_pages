@@ -27,10 +27,10 @@ This repository contains the complete project proposal for developing a multi-te
 - **React Dashboard** for user interface
 - **Multi-tenant security** with VPC isolation
 
-## 📊 Additional Documentation
+## 📊 Project Documentation
 
+- **Complete Proposal**: [https://ryanmkelley.github.io/rdc_quote_pages/quote.html](https://ryanmkelley.github.io/rdc_quote_pages/quote.html) - *Main comprehensive proposal document*
 - **Portfolio**: [https://ryanmkelley.github.io/rdc_quote_pages/portfolio.html](https://ryanmkelley.github.io/rdc_quote_pages/portfolio.html)
-- **Project Plan**: [https://ryanmkelley.github.io/rdc_quote_pages/project_plan.html](https://ryanmkelley.github.io/rdc_quote_pages/project_plan.html)
 - **Project Details**: [https://ryanmkelley.github.io/rdc_quote_pages/project_details.html](https://ryanmkelley.github.io/rdc_quote_pages/project_details.html)  
 - **Architecture Diagram**: [https://ryanmkelley.github.io/rdc_quote_pages/sow_architecture_diagram.html](https://ryanmkelley.github.io/rdc_quote_pages/sow_architecture_diagram.html)
 
