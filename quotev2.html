@@ -1035,7 +1035,7 @@
             <p class="section-subtitle">Phase 1 IoT Core Architecture Overview</p>
             
             <div class="architecture-image">
-                <img src="IoTCorePhase1.png" alt="IoT Core Phase 1 Architecture Diagram">
+                <img src="IoTCorePhase1v2.png" alt="IoT Core Phase 1 Architecture Diagram">
                 <div class="image-caption">
                     Phase 1 Architecture: Device and Gateway integration with AWS IoT Core services including MQTT Broker, TimeStream Database, Device Management, and API Gateway
                 </div>
@@ -1047,7 +1047,7 @@
     <section id="deliverables" class="section">
         <div class="container">
             <h2 class="section-title">Project Deliverables</h2>
-            <p class="section-subtitle">Comprehensive list of all project deliverables and documentation</p>
+            <p class="section-subtitle">Project deliverables and documentation</p>
             
             <div class="deliverables-grid">
                 <div class="deliverable-card">
@@ -1057,8 +1057,10 @@
                         <li>Security Posture Documentation</li>
                         <li>Database Schema Documentation</li>
                         <li>MQTT Topic Structure Guide</li>
-                        <li>Device Communications Protocol</li>
+                        <li>Device & Gateway Communications Protocol</li>
                         <li>Data Flow Diagram</li>
+                        <li>Firmware & OTA Management Documentation</li>
+                        <li>Device & Gateway Provisioning Documentation</li>
                         <li>Deployment & CI/CD Documentation</li>
                     </ul>
                 </div>
@@ -1068,9 +1070,12 @@
                     <ul class="deliverable-list">
                         <li>Complete AWS CDK Infrastructure Code</li>
                         <li>Lambda Functions for Device & Data Operations</li>
+                        <li>Timestream, Device Configuration, and Firmware databases</li>
                         <li>AWS IoT Core & MQTT Broker</li>
                         <li>Device Provisioning System</li>
                         <li>Device Management System</li>
+                        <li>Gateway Management System</li>
+                        <li>Device & Gateway Fleet Management System</li>
                         <li>Alert Management System</li>
                     </ul>
                 </div>
@@ -1110,7 +1115,7 @@
                     
                     <div class="risk-item">
                         <h4>Gateway Selection & Firmware</h4>
-                        <p>Gateway selection and firmware? We need to complete a trade study and select a gateway. Even if we don't procede immediately with the gateway, we need to remember that is an additional project.</p>
+                        <p>Gateway selection and firmware? We need to complete a trade study and select a gateway. Even if we don't proceed immediately with the gateway, we need to remember that is an additional project.</p>
                         <div class="mitigation">
                             <strong>Mitigation:</strong> Define gateway requirements in Phase 0, coordinate with hardware team, and plan firmware development as separate project scope.
                         </div>
