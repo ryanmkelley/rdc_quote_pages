@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RDC AWS IoT Core Project - Complete Proposal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8fafc;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>') repeat;
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff 0%, #e2e8f0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .subtitle {
+            font-size: 1.5rem;
+            font-weight: 300;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero .company {
+            font-size: 1.2rem;
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        .nav-bar {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: #e2e8f0;
+            text-decoration: none;
+            padding: 1rem 0;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+            font-size: 0.9rem;
+        }
+
+        .nav-link:hover {
+            color: #10b981;
+            border-bottom-color: #10b981;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section {
+            padding: 4rem 0;
+            position: relative;
+        }
+
+        .section:nth-child(even) {
+            background: white;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1e293b;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: #64748b;
+            text-align: center;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Cost Cards */
+        .cost-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .cost-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.15);
+            text-align: center;
+        }
+
+        .cost-card.total {
+            border-left: 4px solid #10b981;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(5, 150, 105, 0.03) 100%);
+        }
+
+        .cost-card.original {
+            border-left: 4px solid #3b82f6;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(37, 99, 235, 0.03) 100%);
+        }
+
+        .cost-card.delta {
+            border-left: 4px solid #f59e0b;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.05) 0%, rgba(217, 119, 6, 0.03) 100%);
+        }
+
+        .cost-number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .cost-card.total .cost-number { color: #10b981; }
+        .cost-card.original .cost-number { color: #3b82f6; }
+        .cost-card.delta .cost-number { color: #f59e0b; }
+
+        .cost-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .cost-details {
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        /* Cost Explanation */
+        .cost-explanation {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 1px solid #f59e0b;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .cost-explanation h3 {
+            color: #92400e;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .cost-explanation p {
+            color: #78350f;
+            line-height: 1.6;
+        }
+
+        /* Timeline Section */
+        .timeline-container {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            overflow-x: auto;
+        }
+
+        .gantt-chart {
+            min-width: 800px;
+            border-collapse: collapse;
+            width: 100%;
+            margin: 2rem 0;
+        }
+
+        .gantt-chart th,
+        .gantt-chart td {
+            border: 1px solid #e2e8f0;
+            padding: 0.75rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .gantt-chart th {
+            background: #f8fafc;
+            font-weight: 600;
+            color: #475569;
+        }
+
+        .gantt-chart .phase-cell {
+            text-align: left;
+            font-weight: 600;
+            color: #1e293b;
+            min-width: 200px;
+        }
+
+        /* Timeline Container */
+        .timeline-container {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
+        }
+
+        /* Gantt Chart Table */
+        .gantt-chart {
+            width: 100%;
+            min-width: 1400px;
+            border-collapse: collapse;
+        }
+
+        .gantt-chart th {
+            background: #f1f3f4;
+            padding: 12px 8px;
+            text-align: center;
+            font-weight: 600;
+            border: 1px solid #e0e0e0;
+            font-size: 0.9rem;
+        }
+
+        .gantt-chart td {
+            padding: 8px;
+            border: 1px solid #e0e0e0;
+            vertical-align: middle;
+            height: 45px;
+        }
+
+        .gantt-chart .task-name {
+            font-weight: 600;
+            color: #333;
+            min-width: 350px;
+            background: #fafafa;
+            text-align: left;
+            padding-left: 15px;
+        }
+
+        .gantt-chart .task-name em {
+            color: #64748b;
+            font-size: 0.9rem;
+            font-style: italic;
+            display: block;
+            margin-top: 0.5rem;
+        }
+
+        .gantt-chart .week-cell {
+            width: 60px;
+            text-align: center;
+            position: relative;
+        }
+
+        .gantt-chart .task-cell {
+            background: #10b981;
+            color: white;
+            font-size: 0.75em;
+            font-weight: 600;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+            border-radius: 12px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        /* Phase-specific colors matching original */
+        .gantt-chart tr:nth-child(1) .task-cell {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+        }
+
+        .gantt-chart tr:nth-child(2) .task-cell {
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+        }
+
+        .gantt-chart tr:nth-child(3) .task-cell {
+            background: linear-gradient(135deg, #45b7d1, #96c93d);
+        }
+
+        .gantt-chart tr:nth-child(4) .task-cell {
+            background: linear-gradient(135deg, #f9ca24, #f0932b);
+        }
+
+        .gantt-chart tr:nth-child(5) .task-cell {
+            background: linear-gradient(135deg, #eb4d4b, #6c5ce7);
+        }
+
+        .gantt-chart tr:nth-child(6) .task-cell {
+            background: linear-gradient(135deg, #a55eea, #26de81);
+        }
+
+        /* Row type styling */
+        .phase-header {
+            background: #e8f0fe !important;
+            font-weight: 700;
+            color: #1a73e8;
+            font-size: 1.1em;
+        }
+
+        .task-row {
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        .milestone-row {
+            background: #fff3cd !important;
+            font-weight: 600;
+            color: #856404;
+        }
+
+        .milestone {
+            background: #dc3545;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8px;
+            color: white;
+        }
+
+        /* Project Overview */
+        .phase-grid {
+            display: grid;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .phase-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #10b981;
+        }
+
+        .phase-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+
+        .phase-timeline {
+            background: #10b981;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .deliverable {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        .deliverable strong {
+            color: #10b981;
+        }
+
+        /* Portfolio Section */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(16, 185, 129, 0.15);
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(16, 185, 129, 0.15);
+        }
+
+        .project-header {
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(5, 150, 105, 0.08) 100%);
+            position: relative;
+        }
+
+        .project-logo {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: white;
+        }
+
+        .lunar-logo { background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); }
+        .boreas-logo { background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); }
+        .particle-logo { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); }
+
+        .project-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+
+        .project-subtitle {
+            color: #10b981;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .project-content {
+            padding: 2rem;
+        }
+
+        .project-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .metric {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(16, 185, 129, 0.08);
+            border-radius: 10px;
+        }
+
+        .metric-number {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #10b981;
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tech-tag {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* Risk Assessment */
+        .risk-grid {
+            display: grid;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .risk-category {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .risk-category h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #10b981;
+        }
+
+        .risk-item {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: rgba(239, 68, 68, 0.05);
+            border-left: 4px solid #ef4444;
+            border-radius: 8px;
+        }
+
+        .risk-item h4 {
+            font-weight: 600;
+            color: #dc2626;
+            margin-bottom: 0.5rem;
+        }
+
+        .risk-item p {
+            color: #64748b;
+            margin-bottom: 0.5rem;
+        }
+
+        .mitigation {
+            background: rgba(16, 185, 129, 0.1);
+            padding: 0.75rem;
+            border-radius: 6px;
+            margin-top: 0.5rem;
+        }
+
+        .mitigation strong {
+            color: #10b981;
+        }
+
+        /* Deliverables Section */
+        .deliverables-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .deliverable-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #10b981;
+        }
+
+        .deliverable-card h3 {
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+
+        .deliverable-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .deliverable-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e2e8f0;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .deliverable-list li:before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        /* Architecture Image */
+        .architecture-image {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border: 1px solid #333;
+        }
+
+        .architecture-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .image-caption {
+            text-align: center;
+            font-style: italic;
+            color: #64748b;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        .cta-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            background: #10b981;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav-container {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .nav-link {
+                padding: 0.75rem 0;
+            }
+            
+            .cost-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>RDC AWS IoT Core Project</h1>
+            <p class="subtitle">Safety Monitoring & Gateway Integration Platform</p>
+            <p class="company">Proposed by Conifer Technologies LLC</p>
+        </div>
+    </section>
+
+    <!-- Navigation -->
+    <nav class="nav-bar">
+        <div class="nav-container">
+            <a href="#timeline" class="nav-link">Timeline</a>
+            <a href="#project-overview" class="nav-link">Project Overview</a>
+            <a href="#cost-analysis" class="nav-link">Cost Analysis</a>
+            <a href="#scope" class="nav-link">Scope</a>
+            <a href="#deliverables" class="nav-link">Deliverables</a>
+            <a href="#risk-assessment" class="nav-link">Risk Assessment</a>
+            <a href="#portfolio" class="nav-link">Portfolio</a>
+        </div>
+    </nav>
+
+    <!-- Timeline Section -->
+    <section id="timeline" class="section">
+        <div class="container">
+            <h2 class="section-title">Project Timeline</h2>
+            <p class="section-subtitle">15-week development plan with clear milestones and deliverables</p>
+            
+            <div class="timeline-container">
+                <table class="gantt-chart">
+                    <thead>
+                        <tr>
+                            <th class="task-name">Phase / Task</th>
+                            <th>Week 1</th>
+                            <th>Week 2</th>
+                            <th>Week 3</th>
+                            <th>Week 4</th>
+                            <th>Week 5</th>
+                            <th>Week 6</th>
+                            <th>Week 7</th>
+                            <th>Week 8</th>
+                            <th>Week 9</th>
+                            <th>Week 10</th>
+                            <th>Week 11</th>
+                            <th>Week 12</th>
+                            <th>Week 13</th>
+                            <th>Week 14</th>
+                            <th>Week 15</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="task-row">
+                            <td class="task-name">Cloud Architecture<br><em>Objective: Documentation & approval</em></td>
+                            <td class="task-cell">✓</td>
+                            <td class="task-cell">✓</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+
+                        <tr class="task-row">
+                            <td class="task-name">IoT Core Architecture<br><em>Objective: Documentation & approval</em></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="task-cell">✓</td>
+                            <td class="task-cell">✓</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+
+                        <tr class="task-row">
+                            <td class="task-name">Cloud & Tooling Setup<br><em>Objective: Automated cloud Infrastructure Deployment</em></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="task-cell">✓</td>
+                            <td class="task-cell">✓</td>
+                            <td class="task-cell">✓</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+
+                        <tr class="task-row">
+                            <td class="task-name">IoT Core & Device Comms<br><em>Objective: Demonstrate an emulated device pushing data from End to End</em></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="task-cell">✓</td>
+                            <td class="task-cell">✓</td>
+                            <td class="task-cell">✓</td>
+                            <td class="task-cell">✓</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+
+                        <tr class="task-row">
+                            <td class="task-name">Gateway Comms & Emulation<br><em>Objective: Demonstrate gateway management</em></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="task-cell">✓</td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                        </tr>
+
+                        <tr class="task-row">
+                            <td class="task-name">Final Testing & Auditing<br><em>Objective: Demonstrate End to End functionality</em></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="week-cell"></td>
+                            <td class="task-cell">✓</td>
+                            <td class="task-cell">✓</td>
+                            <td class="task-cell">✓</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Project Overview Section -->
+    <section id="project-overview" class="section">
+        <div class="container">
+            <h2 class="section-title">Project Overview</h2>
+            <p class="section-subtitle">Detailed breakdown of project phases and key deliverables</p>
+            
+            <div class="phase-grid">
+                <div class="phase-card">
+                    <div class="phase-timeline">Phase 1: Weeks 1-2</div>
+                    <h3 class="phase-title">Cloud Architecture</h3>
+                    <ul>
+                        <li>Define security requirements (SOC2)</li>
+                        <li>Define authentication (SSO)</li>
+                        <li>Document & implement tenancy strategy</li>
+                        <li>Define & document auditing and traceability requirements</li>
+                        <li>Define & Document cloud resources and base level architecture</li>
+                        <li>Define database architecture</li>
+                        <li>Define data storage architecture & requirements</li>
+                        <li>Define cloud formation procedure & policy</li>
+                        <li>Define & document test coverage and test plan</li>
+                    </ul>
+                    <div class="deliverable">
+                        <strong>Objective:</strong> Documentation & approval of cloud architecture
+                    </div>
+                </div>
+
+                <div class="phase-card">
+                    <div class="phase-timeline">Phase 2: Weeks 3-4</div>
+                    <h3 class="phase-title">IoT Core Architecture</h3>
+                    <ul>
+                        <li>Define device types</li>
+                        <li>Define device functionality</li>
+                        <li>Define device payloads</li>
+                        <li>Define device metadata</li>
+                        <li>Define device configuration(s)</li>
+                        <li>Define device coms protocol</li>
+                        <li>Define Firmware [file] management and OTA</li>
+                        <li>Define device management requirements</li>
+                        <li>Define device monitoring requirements</li>
+                        <li>Define device provisioning procedure</li>
+                        <li>Define gateway provisioning procedure</li>
+                        <li>Define gateway management requirements</li>
+                        <li>Define & Document MQTT broker architecture</li>
+                        <li>Define & document test coverage and test plan</li>
+                    </ul>
+                    <div class="deliverable">
+                        <strong>Objective:</strong> Documentation & approval of IoT Core architecture
+                    </div>
+                </div>
+
+                <div class="phase-card">
+                    <div class="phase-timeline">Phase 3: Weeks 5-7</div>
+                    <h3 class="phase-title">Cloud & Tooling Setup</h3>
+                    <ul>
+                        <li>AWS credit retrieval</li>
+                        <li>AWS root acct setup</li>
+                        <li>AWS resource and user IAM setup</li>
+                        <li>AWS cost center and reporting setup</li>
+                        <li>Cloud formation setup</li>
+                        <li>IoT Core infra with AWS Cloud Formation</li>
+                        <li>Database infra with AWS Cloud Formation</li>
+                        <li>Database seeding & documentation</li>
+                        <li>Data retention, back up, and recovery</li>
+                        <li>Continuous monitoring setup</li>
+                        <li>Audit log set up and testing</li>
+                    </ul>
+                    <div class="deliverable">
+                        <strong>Objective:</strong> Cloud Infrastructure Deployment
+                    </div>
+                </div>
+
+                <div class="phase-card">
+                    <div class="phase-timeline">Phase 4: Weeks 8-11</div>
+                    <h3 class="phase-title">IoT Core & Device Comms</h3>
+                    <ul>
+                        <li>Device Certificate Authority (CA) infrastructure</li>
+                        <li>Device provisioning & simulation</li>
+                        <li>Implement messaging MQTT topics</li>
+                        <li>Develop a device messaging (sensor data) emulator</li>
+                        <li>Implement configuration MQTT topics</li>
+                        <li>Develop device configuration management tool</li>
+                        <li>Implement Over the Air (OTA) firmware updates</li>
+                        <li>Implement OTA management tool</li>
+                        <li>Develop an OTA simulator for testing many possible OTA failure modes</li>
+                        <li>Develop bi-directional MQTT alerts</li>
+                        <li>Device decommissioning</li>
+                    </ul>
+                    <div class="deliverable">
+                        <strong>Objective:</strong> Demonstrate an emulated device pushing data from end-to-end
+                    </div>
+                </div>
+
+                <div class="phase-card">
+                    <div class="phase-timeline">Phase 5: Week 12</div>
+                    <h3 class="phase-title">Gateway Comms & Emulation</h3>
+                    <ul>
+                        <li>Implement messaging MQTT topics</li>
+                        <li>Develop a device data pipe (pass through to device)</li>
+                        <li>Implement configuration MQTT topics</li>
+                        <li>Develop device configuration management tool</li>
+                        <li>Implement OTA</li>
+                    </ul>
+                    <div class="deliverable">
+                        <strong>Objective:</strong> Demonstrate gateway management
+                    </div>
+                </div>
+
+                <div class="phase-card">
+                    <div class="phase-timeline">Phase 6: Weeks 13-15</div>
+                    <h3 class="phase-title">Final Testing & Auditing</h3>
+                    <ul>
+                        <li>Code review, documentation, clean up</li>
+                        <li>Test plan review and gap analysis</li>
+                        <li>CI/CD review, testing, and documentation</li>
+                        <li>Disaster recovery and data integrity test</li>
+                        <li>Security Audit</li>
+                        <li>(Optional Highly Recommended) Network failure testing (OTA, Alerts, Data)</li>
+                        <li>(Optional) Stress/Scale testing</li>
+                        <li>(Optional) Penetration testing</li>
+                    </ul>
+                    <div class="deliverable">
+                        <strong>Objective:</strong> Demonstrate End to End functionality
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cost Analysis Section -->
+    <section id="cost-analysis" class="section">
+        <div class="container">
+            <h2 class="section-title">Cost Analysis</h2>
+            <p class="section-subtitle">Comprehensive cost breakdown with project adjustments</p>
+            
+            <div class="cost-cards">
+                <div class="cost-card total">
+                    <div class="cost-number">$95,850</div>
+                    <div class="cost-label">Total Project Cost</div>
+                    <div class="cost-details">15 weeks duration</div>
+                </div>
+                
+                <div class="cost-card original">
+                    <div class="cost-number">$68,850</div>
+                    <div class="cost-label">Original Phase 1 Project Cost</div>
+                    <div class="cost-details">10.2 weeks duration</div>
+                </div>
+                
+                <div class="cost-card delta">
+                    <div class="cost-number">+$27,000</div>
+                    <div class="cost-label">Cost Increase</div>
+                    <div class="cost-details">+4.8 weeks duration</div>
+                </div>
+            </div>
+
+            <div class="cost-explanation">
+                <h3>Cost Increase Explanation</h3>
+                <p><strong>SOC2 Security Requirements (+$16,200, +3.6 weeks):</strong> Implementation of comprehensive security controls, audit trails, and compliance documentation required for SOC2 certification significantly increased development complexity.</p>
+                <br>
+                <p><strong>Bluetooth Gateway Integration (+$10,800, +2.2 weeks):</strong> Adding support for a new Bluetooth gateway device type required additional firmware considerations, new data conduits, and expanded device management capabilities beyond the original scope. The primary complexity increase comes from the need to secure every device on the communications chain. Prior to this change, the project was scoped assuming the end device (sensor) would report directly to the AWS cloud via wifi or cellular. With this change, TLS support, certificates, and keys will be required for the devices and the gateway.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scope Section -->
+    <section id="scope" class="section">
+        <div class="container">
+            <h2 class="section-title">Project Scope</h2>
+            <p class="section-subtitle">Phase 1 IoT Core Architecture Overview</p>
+            
+            <div class="architecture-image">
+                <img src="IoTCorePhase1.png" alt="IoT Core Phase 1 Architecture Diagram">
+                <div class="image-caption">
+                    Phase 1 Architecture: Device and Gateway integration with AWS IoT Core services including MQTT Broker, TimeStream Database, Device Management, and API Gateway
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Deliverables Section -->
+    <section id="deliverables" class="section">
+        <div class="container">
+            <h2 class="section-title">Project Deliverables</h2>
+            <p class="section-subtitle">Comprehensive list of all project deliverables and documentation</p>
+            
+            <div class="deliverables-grid">
+                <div class="deliverable-card">
+                    <h3>Technical Documentation</h3>
+                    <ul class="deliverable-list">
+                        <li>System Architecture Documentation</li>
+                        <li>Security Posture Documentation</li>
+                        <li>Database Schema Documentation</li>
+                        <li>MQTT Topic Structure Guide</li>
+                        <li>Device Communications Protocol</li>
+                        <li>Data Flow Diagram</li>
+                        <li>Deployment & CI/CD Documentation</li>
+                    </ul>
+                </div>
+
+                <div class="deliverable-card">
+                    <h3>Software Components</h3>
+                    <ul class="deliverable-list">
+                        <li>Complete AWS CDK Infrastructure Code</li>
+                        <li>Lambda Functions for Device & Data Operations</li>
+                        <li>AWS IoT Core & MQTT Broker</li>
+                        <li>Device Provisioning System</li>
+                        <li>Device Management System</li>
+                        <li>Alert Management System</li>
+                    </ul>
+                </div>
+
+                <div class="deliverable-card">
+                    <h3>Testing & Quality Assurance</h3>
+                    <ul class="deliverable-list">
+                        <li>Automated Test Suite (100% Coverage for Critical Paths)</li>
+                        <li>Device Simulators and Testing Tools</li>
+                        <li>Performance Testing Reports</li>
+                        <li>Security Testing Documentation</li>
+                        <li>Security Boundary Audit & Documentation</li>
+                        <li>Error Boundary Testing</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Risk Assessment Section -->
+    <section id="risk-assessment" class="section">
+        <div class="container">
+            <h2 class="section-title">Risk Assessment</h2>
+            <p class="section-subtitle">Comprehensive risk analysis with mitigation strategies</p>
+            
+            <div class="risk-grid">
+                <div class="risk-category">
+                    <h3>Major Questions & Technical Challenges</h3>
+                    
+                    <div class="risk-item">
+                        <h4>Device & Gateway Emulation</h4>
+                        <p>How do we emulate a device and a gateway? Emulating a device is easy, but emulating the entire data path is more complex: device ↔ gateway ↔ AWS</p>
+                        <div class="mitigation">
+                            <strong>Mitigation:</strong> Decide on gateway and device management and trust level up front in phase 0.
+                        </div>
+                    </div>
+                    
+                    <div class="risk-item">
+                        <h4>Gateway Selection & Firmware</h4>
+                        <p>Gateway selection and firmware? We need to complete a trade study and select a gateway. Even if we don't procede immediately with the gateway, we need to remember that is an additional project.</p>
+                        <div class="mitigation">
+                            <strong>Mitigation:</strong> Define gateway requirements in Phase 0, coordinate with hardware team, and plan firmware development as separate project scope.
+                        </div>
+                    </div>
+                    
+                    <div class="risk-item">
+                        <h4>TLS Communications Via Gateway</h4>
+                        <p>End device communications through the gateway. There are several options: (1) Gateway manages devices as trusted endpoint (2) Both gateway and devices managed (3) Gateway as TLS tunnel</p>
+                        <div class="mitigation">
+                            <strong>Mitigation:</strong> Evaluate security requirements, performance implications, and choose architecture in Phase 0 with client approval.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="risk-category">
+                    <h3>Technical Risks</h3>
+                    
+                    <div class="risk-item">
+                        <h4>Real-time Performance Requirements</h4>
+                        <p>1-second latency requirement for live monitoring may be challenging with cloud architecture.</p>
+                        <div class="mitigation">
+                            <strong>Mitigation:</strong> For real-time requirements, consider using a local application with a direct connection to the device.
+                        </div>
+                    </div>
+                    
+                    <div class="risk-item">
+                        <h4>Hardware Requirements</h4>
+                        <p>By nature of defining the cloud architecture, we will need to define the hardware requirements. This is a significant risk as it will require the hardware team to design to the specification defined in this project.</p>
+                        <div class="mitigation">
+                            <strong>Mitigation:</strong> Engage with hardware team early and often. Draw from Conifer's experience with hardware design and development.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="risk-category">
+                    <h3>Project Assumptions</h3>
+                    
+                    <div class="risk-item">
+                        <h4>SOC 2 Type 2 Security</h4>
+                        <p>Assumption that all development and testing will be done in a SOC 2 Type 2 compliant environment.</p>
+                    </div>
+                    
+                    <div class="risk-item">
+                        <h4>Bluetooth Gateway</h4>
+                        <p>Assumption that devices will communicate through a bluetooth gateway to reach the cloud.</p>
+                    </div>
+                    <div class="risk-item">
+                        <h4>Infrastructure Defined Hardware</h4>
+                        <p>Assumption that the hardware design, firmware design, and manufacturing process can be defined and driven by this project.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="section">
+        <div class="container">
+            <h2 class="section-title">Our Portfolio</h2>
+            <p class="section-subtitle">Proven expertise in IoT platform development and implementation</p>
+            
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-logo lunar-logo">LUNAR</div>
+                        <h3 class="project-title">Canary Air Quality</h3>
+                        <p class="project-subtitle">Lunar Outpost Partnership</p>
+                        <p>Real-time air quality monitoring platform for industrial applications with advanced sensor integration and predictive analytics.</p>
+                    </div>
+                    <div class="project-content">
+                        <div class="project-metrics">
+                            <div class="metric">
+                                <div class="metric-number">450+</div>
+                                <div class="metric-label">Deployed Devices</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-number">99.8%</div>
+                                <div class="metric-label">Uptime</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-number">15ms</div>
+                                <div class="metric-label">Avg Response</div>
+                            </div>
+                        </div>
+                        <div class="tech-tags">
+                            <span class="tech-tag">AWS IoT Core</span>
+                            <span class="tech-tag">React</span>
+                            <span class="tech-tag">Lambda</span>
+                            <span class="tech-tag">DynamoDB</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-logo boreas-logo">BOREAS</div>
+                        <h3 class="project-title">CryoScout™ Monitoring</h3>
+                        <p class="project-subtitle">Boreas Monitoring Partnership</p>
+                        <p>Advanced cryogenic monitoring system with real-time alerts and comprehensive data visualization for critical infrastructure.</p>
+                    </div>
+                    <div class="project-content">
+                        <div class="project-metrics">
+                            <div class="metric">
+                                <div class="metric-number">200+</div>
+                                <div class="metric-label">Active Sensors</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-number">24/7</div>
+                                <div class="metric-label">Monitoring</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-number">5sec</div>
+                                <div class="metric-label">Alert Speed</div>
+                            </div>
+                        </div>
+                        <div class="tech-tags">
+                            <span class="tech-tag">TimeStream</span>
+                            <span class="tech-tag">SNS/SQS</span>
+                            <span class="tech-tag">WebSocket</span>
+                            <span class="tech-tag">CloudWatch</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-logo particle-logo">PARTICLE</div>
+                        <h3 class="project-title">VitalFlo Health</h3>
+                        <p class="project-subtitle">Particle Health Platform</p>
+                        <p>Healthcare IoT platform for patient monitoring with HIPAA compliance and real-time vital sign tracking.</p>
+                    </div>
+                    <div class="project-content">
+                        <div class="project-metrics">
+                            <div class="metric">
+                                <div class="metric-number">1,200+</div>
+                                <div class="metric-label">Patients</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-number">HIPAA</div>
+                                <div class="metric-label">Compliant</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-number">99.9%</div>
+                                <div class="metric-label">Reliability</div>
+                            </div>
+                        </div>
+                        <div class="tech-tags">
+                            <span class="tech-tag">MQTT</span>
+                            <span class="tech-tag">Encryption</span>
+                            <span class="tech-tag">Analytics</span>
+                            <span class="tech-tag">Mobile</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Get Started?</h2>
+                <p>Let's discuss your IoT platform needs and begin development immediately.</p>
+                <a href="mailto:ryan@conifertechnologies.com" class="cta-button">Contact Us Today</a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                
+                if (targetSection) {
+                    targetSection.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Highlight active section in navigation
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('.section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
